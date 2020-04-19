@@ -1,3 +1,5 @@
+# https://www.w3schools.com/html/html5_draganddrop.asp
+
 <?php
     function alert($message) {
         echo "<script type='text/javascript'>alert('$message');</script>";
@@ -53,15 +55,14 @@
                 $dir = new DirectoryIterator($dirPath);
                 foreach ($dir as $file) {
                     if (!$file->isDot()) {
-                        echo "<img src='". $file->getPathname() ."' alt='img' height='50'>";
+                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true'  ondragstart='drag(event)'>";
                     }
                 }
             } else {
                 # L'utilisateur n'a jamais mis en ligne des images
                 mkdir($dirPath);
             }
-            echo 
-" 
+            echo " 
 <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
     <label for='image'>
         <input type='file' name='image' id='image' style='display:none;'/>
