@@ -14,7 +14,7 @@ session_start();
                 echo 
                     "<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"post\">
                         <label>Pseudo : <input type='text' name='pseudo' placeholder='".$p."' required></label><br>
-                        <label>Mot de passe : <input type='text' name='mdp' required></label><br>
+                        <label>Mot de passe : <input type='password' name='mdp' required></label><br>
                         <input type='submit' value='Valider'/>
                     </form>";
             }
