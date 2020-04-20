@@ -1,4 +1,4 @@
-# https://www.w3schools.com/html/html5_draganddrop.asp
+<!-- https://www.w3schools.com/html/html5_draganddrop.asp -->
 
 <?php
     function alert($message) {
@@ -43,7 +43,28 @@
             form.inline input:hover  {
                 background-color: darkgreen;
             }
+            #div1, #div2 {
+                float: left;
+                width: 50px;
+                height: 50px;
+                margin: 10px;
+                padding: 10px;
+                border: 1px solid black;
+            }
         </style>
+        <script type="text/javascript">
+            function allowDrop(ev){
+                ev.preventDefault();
+            }
+            function drag(ev){
+                ev.dataTransfer.setData("text", ev.target.id);
+            }
+            function drop(ev){
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+                ev.target.appendChild(document.getElementById(data));
+            }
+        </script>
     </head>
     <body>
     <?php
@@ -55,7 +76,7 @@
                 $dir = new DirectoryIterator($dirPath);
                 foreach ($dir as $file) {
                     if (!$file->isDot()) {
-                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true'  ondragstart='drag(event)'>";
+                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true'  ondragstart='drag(event)' id =". $file->getPathname() .">";
                     }
                 }
             } else {
@@ -65,14 +86,20 @@
             echo " 
 <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
     <label for='image'>
-        <input type='file' name='image' id='image' style='display:none;'/>
-        <img src='data/img/plus.svg' alt='img' height='50'>
+        <img src='data/img/plus.svg' draggable='true' ondragstart='drag(event)' id='drag1' alt='img' height='50'> <br>
+        <input type='file' name='image' id='image'/>
     </label>
     <input type='submit' value='Upload' name='submit'>
 </form>
 <br>";
         }
     ?>
+    <br>
+
+    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+    <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
     <br>
     <a href='logout.php'>Se déconnecter</a><br>
     </body>
