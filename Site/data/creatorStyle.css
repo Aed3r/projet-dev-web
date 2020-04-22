@@ -1,0 +1,25 @@
+form.inline {
+    display:inline-flex;
+    margin:5px;
+    padding:0px;
+    justify-content: center;
+    align-items: center;
+}
+form.inline input  {
+    padding: 8px 15px;
+    background-color: green;
+    border: 1px solid #ddd;
+    color: white;
+    margin: 0px 10px;
+}
+form.inline input:hover  {
+    background-color: darkgreen;
+}
+#div1 {
+    float: left;
+    width: 200px;
+    height:200px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+}
