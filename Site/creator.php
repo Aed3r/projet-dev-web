@@ -1,5 +1,3 @@
-<!-- https://www.w3schools.com/html/html5_draganddrop.asp -->
-
 <?php
     function alert($message) {
         echo "<script type='text/javascript'>alert('$message');</script>";
@@ -18,6 +16,7 @@
                 alert("Erreur lors de la mise en ligne du fichier : " . $_FILES["image"]["error"]);
             }
         }
+        unset($_POST["submit"]);
     }
 ?>
 <!DOCTYPE html>
@@ -50,12 +49,14 @@
     <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
         <label for='image'>
             <input type='file' name='image' id='image' style='display:none;'/>
-            <img src='data/img/plus.svg' alt='img' height='50'>
+            <img src='data/img/plus.svg' alt='Ajouter une image' height='50'>
         </label>
         <input type='submit' value='Upload' name='submit'>
     </form> <br> <br>
 
-    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div id="creator" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <img src='data/img/tshirt-mask.svg' id="mask" alt='mask'>
+    </div>
 
     <br>
     <a href='logout.php'>Se déconnecter</a><br>

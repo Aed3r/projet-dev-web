@@ -5,6 +5,7 @@ form.inline {
     justify-content: center;
     align-items: center;
 }
+
 form.inline input  {
     padding: 8px 15px;
     background-color: green;
@@ -12,14 +13,32 @@ form.inline input  {
     color: white;
     margin: 0px 10px;
 }
+
 form.inline input:hover  {
     background-color: darkgreen;
 }
-#div1 {
+
+#creator {
     float: left;
-    width: 200px;
-    height:200px;
+    width: 500px;
+    height: 500px;
     margin: 10px;
-    padding: 10px;
     border: 1px solid black;
+    border-radius: 25px;
+    background-image: url("img/tshirt.svg");
+}
+
+#creator > img {
+    position: absolute;
+}
+
+#mask {
+    /* Même tailles que #creator */
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    /* Le masque reste toujours au dessus des images */
+    z-index: 1;
+    /* On clique au travers le masque */
+    pointer-events: none;
 }
