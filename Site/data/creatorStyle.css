@@ -42,3 +42,28 @@ form.inline input:hover  {
     /* On clique au travers le masque */
     pointer-events: none;
 }
+
+.handle {
+    height: 8px;
+    width: 8px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    visibility: hidden;
+    z-index: 1;
+}
+
+/* Evite de tout sélectionner en faisant drag&drop / resize */
+/* https://stackoverflow.com/a/2326028/5591299 */
+*.unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+ 
+    /*
+      Introduced in IE 10.
+      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
+ }

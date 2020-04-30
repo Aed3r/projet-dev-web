@@ -37,7 +37,7 @@
                 $dir = new DirectoryIterator($dirPath);
                 foreach ($dir as $file) {
                     if (!$file->isDot()) {
-                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true'  ondragstart='drag(event)' id =". $file->getPathname() .">";
+                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true' class='unselectable' ondragstart='drag(event)' id =". $file->getPathname() ." onmouseup='imgClick(\"". $file->getPathname() ."\")'>";
                     }
                 }
             } else {
@@ -54,8 +54,12 @@
         <input type='submit' value='Upload' name='submit'>
     </form> <br> <br>
 
-    <div id="creator" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <img src='data/img/tshirt-mask.svg' id="mask" alt='mask'>
+    <div id="creator" ondrop="drop(event)" ondragover="allowDrop(event)" onmousemove="resize(event)" onmouseleave="resizeStop()">
+        <img src='data/img/tshirt-mask.svg' class="unselectable" id="mask" alt='mask'>
+        <span class="handle" id="topleft" onmousedown="resizeStart('topleft')" onmouseup="resizeStop()"></span>
+        <span class="handle" id="topright" onmousedown="resizeStart('topright')" onmouseup="resizeStop()"></span>
+        <span class="handle" id="bottomleft" onmousedown="resizeStart('bottomleft')" onmouseup="resizeStop()"></span>
+        <span class="handle" id="bottomright" onmousedown="resizeStart('bottomright')" onmouseup="resizeStop()"></span> 
     </div>
 
     <br>
