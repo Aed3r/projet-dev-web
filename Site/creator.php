@@ -37,7 +37,7 @@
                 $dir = new DirectoryIterator($dirPath);
                 foreach ($dir as $file) {
                     if (!$file->isDot()) {
-                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true' class='unselectable' ondragstart='drag(event)' id =". $file->getPathname() ." onmouseup='imgClick(\"". $file->getPathname() ."\")'>";
+                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $file->getPathname() ." onmouseup='imgClick(\"". $file->getPathname() ."\")'>";
                     }
                 }
             } else {
@@ -62,6 +62,9 @@
         <span class="handle" id="bottomright" onmousedown="resizeStart('bottomright')" onmouseup="resizeStop()"></span> 
     </div>
 
+    <br>
+    <label for="colorWell">Couleur:</label>
+    <input type="color" value="#ff0000" id="colorWell">
     <br>
     <a href='logout.php'>Se déconnecter</a><br>
     </body>

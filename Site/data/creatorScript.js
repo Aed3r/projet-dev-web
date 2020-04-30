@@ -27,6 +27,10 @@ function drop(ev){
   
   image.style.marginLeft = ev.pageX - dropOffsetX - div.offsetLeft + "px";
   image.style.marginTop = ev.pageY - dropOffsetY - div.offsetTop + "px";
+  image.style.border = "none";
+  image.style.borderRadius = "0px";
+
+  /* On remet les handle à la bonne place */
   if (selected != "") {
     selectImg (selected);
   }
@@ -88,13 +92,15 @@ function deselectImg () {
 }
 
 function imgClick (id) {
-  if (selected === id) {
-    deselectImg (id);
-  } else if (selected == "") {
-    selectImg (id);
-  } else {
-    deselectImg (selected);
-    selectImg (id);
+  if (document.getElementById(id).parentElement.nodeName == "DIV") {
+    if (selected === id) {
+      deselectImg (id);
+    } else if (selected == "") {
+      selectImg (id);
+    } else {
+      deselectImg (selected);
+      selectImg (id);
+    }
   }
 }
 
@@ -170,4 +176,23 @@ function resize (ev) {
 
 function resizeStop () {
   resizing = "";
+}
+
+/* Couleur 
+   https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color */
+
+var colorWell;
+var defaultColor = "#f5f5f5";
+
+window.addEventListener("load", startup, false);
+
+function startup() {
+  colorWell = document.querySelector("#colorWell");
+  colorWell.value = defaultColor;
+  colorWell.addEventListener("input", update, false);
+  colorWell.select();
+}
+
+function update (event) {
+  document.getElementById("creator").style.backgroundColor = event.target.value;
 }

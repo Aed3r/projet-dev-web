@@ -6,6 +6,11 @@ form.inline {
     align-items: center;
 }
 
+.thumbnail {
+    border-bottom: 5px solid navy;
+    border-radius: 15px;
+}
+
 form.inline input  {
     padding: 8px 15px;
     background-color: green;
@@ -26,6 +31,7 @@ form.inline input:hover  {
     border: 1px solid black;
     border-radius: 25px;
     background-image: url("img/tshirt.svg");
+    background-color: whitesmoke;
 }
 
 #creator > img {
