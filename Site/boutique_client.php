@@ -1,18 +1,11 @@
 <?php
-ini_set('display_errors', '1');
-error_reporting(E_ALL);
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=projet', 'paul-antoine', 'passBD');
-    }
-catch(PDOException $e) {
-echo $e->getMessage();
-}
+include 'bdd/connex.inc.php';
+$pdo = connex();
 
 $recup= $pdo->query('SELECT * FROM Produits');
 while ($donnees = $recup->fetch())
 {
     echo '<a href="precision_produit.php?var= '.$donnees['id'].'"> <img src="' . $donnees['lien_image'] . '" width="300" height="250" > </a>';
-
 }
 
 

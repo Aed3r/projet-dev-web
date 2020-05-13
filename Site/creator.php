@@ -67,5 +67,6 @@
     <input type="color" value="#ff0000" id="colorWell">
     <br>
     <a href='logout.php'>Se déconnecter</a><br>
+    
     </body>
 </html>
