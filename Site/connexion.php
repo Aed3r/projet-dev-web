@@ -20,33 +20,48 @@ session_start();
             }
 
             if (isset($_SESSION["pseudo"])) {
-                echo "Vous ne pouvez pas vous connecter si vous l'êtes déjà.<br>";
+                header('Location:index.php');
             } else {
                 if (!isset($_POST["pseudo"])) {
                     afficherFormulaire(null);
                 } else {
-                    $pseudo = $_POST["pseudo"];
-                    $mdp = $_POST["mdp"];
-                    $crypt = md5($mdp);
-                    if(file_exists('membres.txt')) {
-                        $lignes=file("membres.txt");
-                        $found = 0;
-                        foreach ($lignes as $num => $val) {
-                            $res = explode(";", $val);
-                            if (strcmp($res[0], $pseudo) == 0) {
-                                if (strcmp($res[1], $crypt) == 0) {
-                                    $found = 1;
-                                    $_SESSION["pseudo"] = $res[0];
-                                    $_SESSION["status"] = $res[2];
-                                    header('Location:index.php');
-                                }
-                            }
+                    include 'bdd/connex.inc.php';
+                    $pdo = connex();
+                    try{     
+                        $pseudo=trim($_POST['pseudo']);
+                        $mdp=md5(trim($_POST['mdp']));
+                        
+                        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE pseudo = :pseudo AND mdp = :mdp");
+                        
+                        $stmt->bindParam(':pseudo', $pseudo);
+                        $stmt->bindParam(':mdp', $mdp);
+                        
+                        $stmt->execute();
+                        
+                        $nb = $stmt->rowCount();
+                        if($nb==1){
+                            $_SESSION['pseudo']=$pseudo;
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                            $_SESSION['statut'] = intval($row['statut']);
+                            header('Location:index.php');
                         }
-                        if (!$found) {
-                            afficherFormulaire("Erreur de pseudo ou de mot de passe");
+                        else{
+                            echo "<!DOCTYPE HTML>
+                                    <html>
+                                    <head>
+                                    <meta charset=\"utf-8\" />
+                                    <title>Connexion</title>
+                                    </head>
+                                    <body>";
+                            afficherFormulaire("erreur de pseudo ou mdp");
                         }
-                    } else {
-                        echo "Erreur d'accès au fichier";
+                        $stmt -> closeCursor();
+                        $pdo = null;
+                            
+                    }
+                    catch(PDOException $e) {
+                        echo '<p>Problème à l\'exécution</p>';
+                        die();
                     }
                 }
             }

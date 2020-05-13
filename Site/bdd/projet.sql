@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Client :  localhost:3306
--- Généré le :  Mar 12 Mai 2020 à 21:43
--- Version du serveur :  10.1.44-MariaDB-0+deb9u1
--- Version de PHP :  7.0.33-0+deb9u7
+-- Host: localhost
+-- Generation Time: May 13, 2020 at 07:58 PM
+-- Server version: 10.4.12-MariaDB
+-- PHP Version: 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,26 +18,30 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `projet`
+-- Database: `test`
 --
+CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `test`;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `disponibilié`
+-- Table structure for table `disponibilité`
 --
 
-CREATE TABLE `disponibilié` (
+DROP TABLE IF EXISTS `disponibilié`;
+DROP TABLE IF EXISTS `disponibilité`;
+CREATE TABLE `disponibilité` (
   `id` int(11) NOT NULL,
   `quantité` int(11) NOT NULL,
   `taille` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Contenu de la table `disponibilié`
+-- Dumping data for table `disponibilité`
 --
 
-INSERT INTO `disponibilié` (`id`, `quantité`, `taille`) VALUES
+INSERT INTO `disponibilité` (`id`, `quantité`, `taille`) VALUES
 (1, 5, 'L'),
 (1, 10, 'M'),
 (2, 50, 'XL'),
@@ -45,9 +50,10 @@ INSERT INTO `disponibilié` (`id`, `quantité`, `taille`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Produits`
+-- Table structure for table `Produits`
 --
 
+DROP TABLE IF EXISTS `Produits`;
 CREATE TABLE `Produits` (
   `id` int(11) NOT NULL,
   `type` varchar(25) NOT NULL,
@@ -57,7 +63,7 @@ CREATE TABLE `Produits` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Contenu de la table `Produits`
+-- Dumping data for table `Produits`
 --
 
 INSERT INTO `Produits` (`id`, `type`, `couleur`, `description`, `lien_image`) VALUES
@@ -66,40 +72,69 @@ INSERT INTO `Produits` (`id`, `type`, `couleur`, `description`, `lien_image`) VA
 (3, 't-shirt', 'noir', 't-shirt du groupe de musique iron maiden logo rond', 'Images/iron_maiden.jpg'),
 (17, 'marcel', 'violet', 'un peu petit', 'chemin');
 
+-- --------------------------------------------------------
+
 --
--- Index pour les tables exportées
+-- Table structure for table `utilisateurs`
+--
+
+DROP TABLE IF EXISTS `utilisateurs`;
+CREATE TABLE `utilisateurs` (
+  `pseudo` varchar(20) NOT NULL,
+  `mdp` varchar(32) NOT NULL,
+  `statut` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Gestion des utilisateurs';
+
+--
+-- Dumping data for table `utilisateurs`
+--
+
+INSERT INTO `utilisateurs` (`pseudo`, `mdp`, `statut`) VALUES
+('aeder', '7903b02fa1b4bb1d7936adb0ce7e7a58', 0),
+('test', '098f6bcd4621d373cade4e832627b4f6', 1);
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `disponibilié`
+-- Indexes for table `disponibilité`
 --
-ALTER TABLE `disponibilié`
+ALTER TABLE `disponibilité`
   ADD PRIMARY KEY (`id`,`quantité`,`taille`) USING BTREE;
 
 --
--- Index pour la table `Produits`
+-- Indexes for table `Produits`
 --
 ALTER TABLE `Produits`
   ADD PRIMARY KEY (`id`,`lien_image`) USING BTREE;
 
 --
--- AUTO_INCREMENT pour les tables exportées
+-- Indexes for table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  ADD UNIQUE KEY `Nom Unique` (`pseudo`);
+
+--
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `Produits`
+-- AUTO_INCREMENT for table `Produits`
 --
 ALTER TABLE `Produits`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
--- Contraintes pour les tables exportées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `disponibilié`
+-- Constraints for table `disponibilité`
 --
-ALTER TABLE `disponibilié`
+ALTER TABLE `disponibilité`
   ADD CONSTRAINT `id_dispo_produit` FOREIGN KEY (`id`) REFERENCES `Produits` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

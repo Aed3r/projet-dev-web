@@ -3,11 +3,11 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-        <meta charset="utf-8" />
-        <title>Inscription</title>
-</head>
-<body>
+    <head>
+            <meta charset="utf-8" />
+            <title>Inscription</title>
+    </head>
+    <body>
 
 <?php
 function afficherFormulaire($p) {
@@ -20,34 +20,52 @@ function afficherFormulaire($p) {
 }
 
 if (isset($_SESSION["pseudo"])) {
-    echo "Vous ne pouvez pas vous inscrire si vous êtes déjà connecté(e).<br>";
+    header('Location:index.php');
 } else {
     if (isset($_POST["pseudo"])) {
-        $pseudo = $_POST["pseudo"];
-        $mdp = $_POST["mdp"];
-        if(file_exists('membres.txt')) {
-            $lignes=file("membres.txt");
-            $found = 0;
-            foreach ($lignes as $num => $val) {
-                $res = explode(";", $val)[0];
-                if (strcmp($res, $pseudo) == 0) {
-                    afficherFormulaire("Ce pseudo est déjà utilisé");
-                    $found = 1;
+        include 'bdd/connex.inc.php';
+        $pdo = connex();
+        try{     
+            $pseudo=trim($_POST['pseudo']);
+            
+            $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE pseudo = :pseudo");
+            
+            $stmt->bindParam(':pseudo', $pseudo);
+            
+            $stmt->execute();
+            
+            $nb = $stmt->rowCount();
+            if($nb==1){
+                afficherFormulaire("Pseudo déjà utilisé!");
+            }
+            else{
+                $stmt -> closeCursor();
+                $mdp=md5(trim($_POST['mdp']));
+                
+                $stmt = $pdo->prepare("INSERT INTO utilisateurs (pseudo, mdp, statut) VALUES( :pseudo, :mdp, '0')");
+                
+                $stmt->bindParam(':pseudo', $pseudo);
+                $stmt->bindParam(':mdp', $mdp);
+                
+                $stmt->execute();
+                
+                $nb = $stmt->rowCount();
+                if($nb == 1){
+                    echo "Vous avez bien été inscrit.<br>";
+                    echo "<a href='connexion.php'>Se connecter</a>";
+                }
+                else{
+                    echo '<p>Erreur lors de l\'ajout</p>';
+                    echo "<a href='index.php'>Index</a><br>";
                 }
             }
-            if (!$found) {
-                $crypt = md5($mdp);
-                if($id_file=fopen("membres.txt","a")){ 
-                    fwrite($id_file, $pseudo.";".$crypt.";0\n"); //ou fputs() : ce sont des alias
-                    fclose($id_file);
-
-                    echo "Inscription réussi ! <a href='connexion.php'>Connexion</a><br>";
-                } else {
-                    echo "Erreur d'accès au fichier";
-                }
-            }
-        } else {
-            echo "Erreur d'accès au fichier";
+            $stmt -> closeCursor();
+            $pdo = null;
+                
+        }
+        catch(PDOException $e) {
+            echo '<p>Problème à l\'exécution</p>';
+            die();
         }
     } else {
         afficherFormulaire(null);
