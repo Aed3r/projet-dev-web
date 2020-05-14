@@ -1,13 +1,7 @@
 <?php
 
-ini_set('display_errors', '1');
-error_reporting(E_ALL);
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=projet', 'paul-antoine', 'passBD');
-    }
-catch(PDOException $e) {
-echo $e->getMessage();
-}
+include 'bdd/connex.inc.php';
+$pdo = connex();
 
 if (isset($_GET['action']) && $_GET['action'] === 'delete') {
     $sql = $pdo->prepare("DELETE FROM Produits WHERE lien_image = :val ");
