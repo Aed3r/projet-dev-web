@@ -23,5 +23,6 @@ while ($donnees = $reponse->fetch())
 
 $reponse->closeCursor();
 echo '<a href="boutique_client.php"> retour </a>';
+$pdo = null;
 
 ?>
