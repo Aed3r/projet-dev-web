@@ -24,7 +24,7 @@ $req->bindParam(':test4', $_POST['lien_image']);
 $req->execute();
 var_dump($req->fetchAll());
 }
-echo '<a href="affichage_admin.php"> retour </a>';
+echo '<a href="page_principale.html"> retour </a>';
 $pdo = null;
 ?>
 </html>
