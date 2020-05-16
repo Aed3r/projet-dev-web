@@ -1,34 +1,55 @@
 function allowDrop(ev){
-  ev.preventDefault();
+  if (ev.target.nodeName == "IMG") {
+    var div = ev.target.parentElement;
+    if (ev.pageX - div.offsetLeft < div.offsetWidth &&
+      ev.pageY - div.offsetTop < div.offsetHeight) {
+      ev.preventDefault();
+    }
+  } else {
+    ev.preventDefault();
+  }
 }
 
-var dropOffsetX;
-var dropOffsetY;
+var dropOffsetX, dropOffsetY, origin, n = 0;
 
 function drag(ev){
   ev.dataTransfer.setData("text", ev.target.id);
   /* Tenir compte du placement du curseur */
-  if (ev.currentTarget.parentElement.nodeName == "BODY") {
-    /* En dehors du créateur */
+  if (ev.currentTarget.parentElement.id == "selector") {
+    /* Depuis le sélécteur */
     dropOffsetX = ev.pageX - ev.currentTarget.offsetLeft;
     dropOffsetY = ev.pageY - ev.currentTarget.offsetTop;
   } else {
-    /* Dans le créateur */
+    /* Depuis le créateur */
     dropOffsetX = ev.pageX - parseInt(ev.currentTarget.style.marginLeft) - ev.currentTarget.parentElement.offsetLeft;
     dropOffsetY = ev.pageY - parseInt(ev.currentTarget.style.marginTop) - ev.currentTarget.parentElement.offsetTop;
   }
+  origin = ev.target.parentElement.id;
+  console.log("test");
 }
 
 function drop(ev){
   ev.preventDefault();
-  var image = document.getElementById(ev.dataTransfer.getData("text"));
+
   var div = document.getElementById("creator");
-  div.appendChild(image);
+
+  if (origin == "selector") {
+    /* On duplique l'image si elle provient du sélecteur */
+    var img = document.getElementById(ev.dataTransfer.getData("text")).cloneNode(false);
+    img.id = n;
+    img.style.border = "none";
+    img.style.borderRadius = "0px";
+    img.onmouseup = function() {img.id};
+    n++;
+  } else if (origin == "creator") {
+    /* On bouge simplement l'image si elle provient du créateur */
+    var img = document.getElementById(ev.dataTransfer.getData("text"));
+  }
+  div.appendChild(img);
   
-  image.style.marginLeft = ev.pageX - dropOffsetX - div.offsetLeft + "px";
-  image.style.marginTop = ev.pageY - dropOffsetY - div.offsetTop + "px";
-  image.style.border = "none";
-  image.style.borderRadius = "0px";
+  /* Placement adapté au curseur */
+  img.style.marginLeft = ev.pageX - dropOffsetX - div.offsetLeft + "px";
+  img.style.marginTop = ev.pageY - dropOffsetY - div.offsetTop + "px";
 
   /* On remet les handle à la bonne place */
   if (selected != "") {

@@ -28,6 +28,7 @@
         <script src="data/creatorScript.js" type="text/javascript"></script>
     </head>
     <body>
+    <div id="selector">
     <?php
         if(!isset($_SESSION["pseudo"])) {
             header('Location:index.php');
@@ -37,7 +38,7 @@
                 $dir = new DirectoryIterator($dirPath);
                 foreach ($dir as $file) {
                     if (!$file->isDot()) {
-                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $file->getPathname() ." onmouseup='imgClick(\"". $file->getPathname() ."\")'>";
+                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". basename($file->getPathname()) .">";
                     }
                 }
             } else {
@@ -46,6 +47,7 @@
             }
         }
     ?>
+    </div>
     <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
         <label for='image'>
             <input type='file' name='image' id='image' style='display:none;'/>
