@@ -39,7 +39,6 @@ function drop(ev){
     img.id = n;
     img.style.border = "none";
     img.style.borderRadius = "0px";
-    img.onmouseup = function() {img.id};
     n++;
   } else if (origin == "creator") {
     /* On bouge simplement l'image si elle provient du créateur */
@@ -57,12 +56,27 @@ function drop(ev){
   }
 }
 
+function handleClick (ev) {
+  if (event.target.nodeName == "IMG") {
+    if (event.target.id == "delBtn") {
+      /* Suppression */
+      deleteSelected();
+    } else {
+      /* Sélection */
+      imgClick (event.target.id);
+    }
+  }
+}
+
 function showHandles () {
+  /* Poignées de redimensionnements */
   var handles = document.getElementsByClassName("handle");
 
   for (handle of handles) {
     handle.style.visibility = "visible";
   }
+  /* Bouton de suppression */
+  document.getElementById("delBtn").style.visibility = "visible";
 }
 
 var selected = "";
@@ -72,6 +86,7 @@ function selectImg (id) {
   var handleTR = document.getElementById("topright");
   var handleBL = document.getElementById("bottomleft");
   var handleBR = document.getElementById("bottomright");
+  var handleDEL = document.getElementById("delBtn");
 
   showHandles();
 
@@ -98,17 +113,30 @@ function selectImg (id) {
   /* Bottom Right */
   handleBR.style.marginLeft = x2;
   handleBR.style.marginTop = y2;
+  /* Delete Button */
+  handleDEL.style.marginLeft = parseInt(img.style.marginLeft) + img.width - handleDEL.offsetWidth + "px";
+  handleDEL.style.marginTop = parseInt(img.style.marginTop) + "px";
+
+  /* On place l'image sélectionné au dessus des autres */
+  document.getElementById('creator').appendChild(img);
 
   selected = id;
 }
 
 function deselectImg () {
+  /* Poignées de redimensionnements */
   var handles = document.getElementsByClassName("handle");
 
   for (handle of handles) {
     handle.style.margin = "0px";
     handle.style.visibility = "hidden";
   }
+  
+  /* Bouton de suppression */
+  var btn = document.getElementById("delBtn");
+  btn.style.margin = "0px";
+  btn.style.visibility = "hidden";
+
   selected = "";
 }
 
@@ -197,6 +225,12 @@ function resize (ev) {
 
 function resizeStop () {
   resizing = "";
+}
+
+function deleteSelected() {
+  var img = document.getElementById(selected);
+  img.parentNode.removeChild(img);
+  deselectImg();
 }
 
 /* Couleur 

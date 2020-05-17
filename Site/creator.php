@@ -47,7 +47,6 @@
             }
         }
     ?>
-    </div>
     <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
         <label for='image'>
             <input type='file' name='image' id='image' style='display:none;'/>
@@ -55,13 +54,16 @@
         </label>
         <input type='submit' value='Upload' name='submit'>
     </form> <br> <br>
+    </div>
+    
 
-    <div id="creator" ondrop="drop(event)" ondragover="allowDrop(event)" onmousemove="resize(event)" onmouseleave="resizeStop()">
+    <div id="creator" ondrop="drop(event)" ondragover="allowDrop(event)" onmousemove="resize(event)" onmouseleave="resizeStop()" onclick="handleClick(event)">
         <img src='data/img/tshirt-mask.svg' class="unselectable" id="mask" alt='mask'>
         <span class="handle" id="topleft" onmousedown="resizeStart('topleft')" onmouseup="resizeStop()"></span>
         <span class="handle" id="topright" onmousedown="resizeStart('topright')" onmouseup="resizeStop()"></span>
         <span class="handle" id="bottomleft" onmousedown="resizeStart('bottomleft')" onmouseup="resizeStop()"></span>
         <span class="handle" id="bottomright" onmousedown="resizeStart('bottomright')" onmouseup="resizeStop()"></span> 
+        <img src='data/img/plus.svg' id="delBtn" alt='Supprimer' class="delBtn">
     </div>
 
     <br>

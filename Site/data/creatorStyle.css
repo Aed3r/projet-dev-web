@@ -73,3 +73,14 @@ form.inline input:hover  {
     -ms-user-select: none;
     user-select: none;
  }
+
+ .delBtn {
+     height: 15px;
+     color: red;
+     position: absolute;
+     visibility: hidden;
+     z-index: 1;
+     transform: rotate(45deg);
+     /* Créé à l'aide de https://codepen.io/sosuke/pen/Pjoqqp */
+     filter: invert(26%) sepia(88%) saturate(7392%) hue-rotate(5deg) brightness(97%) contrast(129%);
+ }
