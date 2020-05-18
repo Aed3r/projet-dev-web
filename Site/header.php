@@ -15,7 +15,7 @@
 	                echo "<li><a href='affichage_admin.php'>Affichage boutique (admin)</a></li>";
 	                echo "<li><a href='ajout_boutique.php'>Ajout boutique (admin)</a></li>";
 	            }
-	            echo "<li><a href='creator.php'>Créer son T-shirt personnalisé</a></li>";
+	            echo "<li><a href='Site/creator.php'>Créer son T-shirt personnalisé</a></li>";
 	            echo "<li><a href='boutique_client.php'>Boutique</a></li>";
 	            echo "<li><a href='logout.php'>Se deconnecter</a></li>";
 	        }

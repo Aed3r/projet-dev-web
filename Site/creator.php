@@ -9,7 +9,7 @@
 
     if(isset($_POST["submit"])) {
         $file = uniqid($dirPath . "/");
-        if ($_FILES["fileToUpload"]["size"] > 500000) {
+        if ($_FILES["image"]["size"] > 500000) {
             alert("Le fichier est trop grand !");
         } else {
             if (!move_uploaded_file($_FILES["image"]["tmp_name"], $file)) {
@@ -53,7 +53,7 @@
     ?>
     <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
         <label for='image'>
-            <input type='file' name='image' id='image' style='display:none;'/>
+            <input type='file' name='image' id='image' style='display:none;' accept="image/*"/>
             <img src='data/img/plus.svg' alt='Ajouter une image' height='50'>
         </label>
         <input type='submit' value='Upload' name='submit'>
