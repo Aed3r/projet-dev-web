@@ -4,10 +4,11 @@
     }
 
     session_start();
-
-    $dirPath = "data/users/" . $_SESSION["pseudo"];
-
-    if(isset($_POST["submit"])) {
+    $max_size = 50000; /*Taille maximale des photos*/
+    /*$dirPath = "data/users/" . $_SESSION["pseudo"];*/
+    /*Gestion de l'upload de fichier*/
+    /*Version fichiers classique*/
+    /*if(isset($_POST["submit"])) {
         $file = uniqid($dirPath . "/");
         if ($_FILES["image"]["size"] > 500000) {
             alert("Le fichier est trop grand !");
@@ -17,8 +18,34 @@
             }
         }
         unset($_POST["submit"]);
+    }*/
+    /*Version bdd*/
+    /*Connexion au sgbd*/
+    include 'bdd/connex.inc.php';
+    $pdo = connex();
+    if(isset($_POST["submit"])) {
+        if(!is_uploaded_file($_FILES["image"]["tmp_name"])){
+            alert("Problème lors du transfert de l'image");
+        }else{
+            /*Le fichier a été reçu correctement*/
+            if($_FILES["image"]["size"] > $max_size){
+                alert("Votre fichier est trop volumineux");
+            }else{
+                /*Préparation de la requête*/
+                $img_blob = file_get_contents($_FILES["image"]["tmp_name"]);
+                $req = $pdo->prepare('INSERT INTO images_util(pseudo_user, img_name, img_size, img_type, img_blob) VALUES (:pseudo, :name, :size, :type, :blob)');
+                $req->bindParam(':pseudo', $_SESSION["pseudo"]);
+                $req->bindParam(':name', $_FILES["image"]["tmp_name"]);
+                $req->bindParam(':size', $_FILES["image"]["size"]);
+                $req->bindParam(':type', $_FILES["image"]["type"]);
+                $req->bindParam(':blob', addslashes($img_blob)); /*Le blob peut contenir des characteres speciaux*/
+                /*Exécution de la requête*/
+                $req->execute();
+            }
+        }
     }
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,7 +64,7 @@
         if(!isset($_SESSION["pseudo"])) {
             header('Location:index.php');
         } else {
-            if (is_dir($dirPath)) {
+            /*if (is_dir($dirPath)) {
                 # On récupère les images déjà chargé
                 $dir = new DirectoryIterator($dirPath);
                 foreach ($dir as $file) {
@@ -48,6 +75,11 @@
             } else {
                 # L'utilisateur n'a jamais mis en ligne des images
                 mkdir($dirPath);
+            }*/
+            /*On recupere les images de l'utilisateur*/
+            $req = $pdo->query("SELECT img_name FROM images_util WHERE pseudo_user = '". $_SESSION['pseudo'] . "'");
+            while($donnee = $req->fetch()){
+                echo "<img src='genere_image.php?name=".$donnee['img_name']."' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['img_name'] ."><br>";
             }
         }
     ?>
@@ -74,6 +106,7 @@
     <input type="color" value="#ff0000" id="colorWell">
     <br>
     <a href='logout.php'>Se déconnecter</a><br>
-    
+    <!-- Deconnexion du sgbd -->
+    <?php $pdo = NULL ; ?>
     </body>
 </html>
