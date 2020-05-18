@@ -1,0 +1,42 @@
+body{
+	background-color: #CCFFCC;
+}
+
+/*************************/
+/*    Style du header    */
+/*************************/
+header{  
+    overflow: hidden; 
+    background-color: #FFC34D;
+} 
+/*************************/
+/*     Style du logo	 */
+/*************************/
+div.logo{
+	float: left;
+	padding: none;
+	height: 100%;
+	width: 10%;
+}
+img.logo_img{
+	float: left; 
+    padding: none;
+}
+/*************************/
+/*     Style du nav      */
+/*************************/
+nav{
+	float : left;
+	width: 90%
+	height: 100%;
+}
+nav li{
+	display: inline-block;
+	padding: none;
+	margin : none;
+}
+nav li a{
+	padding: 0em 1.5em; 
+	text-decoration: none;
+	color: black;
+}

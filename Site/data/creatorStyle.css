@@ -22,12 +22,14 @@ form.inline input  {
 form.inline input:hover  {
     background-color: darkgreen;
 }
-
+div#selector{
+    float: left;
+}
 #creator {
     float: left;
     width: 500px;
     height: 500px;
-    margin: 10px;
+    margin-left: 400px;
     border: 1px solid black;
     border-radius: 25px;
     background-image: url("img/tshirt.svg");
