@@ -56,7 +56,6 @@
     </form> <br> <br>
     </div>
     
-
     <div id="creator" ondrop="drop(event)" ondragover="allowDrop(event)" onmousemove="resize(event)" onmouseleave="resizeStop()" onclick="handleClick(event)">
         <img src='data/img/tshirt-mask.svg' class="unselectable" id="mask" alt='mask'>
         <span class="handle" id="topleft" onmousedown="resizeStart('topleft')" onmouseup="resizeStop()"></span>

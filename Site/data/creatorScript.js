@@ -37,8 +37,8 @@ function drop(ev){
     /* On duplique l'image si elle provient du sélecteur */
     var img = document.getElementById(ev.dataTransfer.getData("text")).cloneNode(false);
     img.id = n;
-    img.style.border = "none";
-    img.style.borderRadius = "0px";
+    img.classList.remove("thumbnail");
+    img.classList.add("used");
     n++;
   } else if (origin == "creator") {
     /* On bouge simplement l'image si elle provient du créateur */
@@ -54,6 +54,7 @@ function drop(ev){
   if (selected != "") {
     selectImg (selected);
   }
+  saveToURL();
 }
 
 function handleClick (ev) {
@@ -220,6 +221,7 @@ function resize (ev) {
       img.style.width = "initial";
     }
     selectImg(selected);
+    saveToURL();
   }
 }
 
@@ -231,6 +233,7 @@ function deleteSelected() {
   var img = document.getElementById(selected);
   img.parentNode.removeChild(img);
   deselectImg();
+  saveToURL();
 }
 
 /* Couleur 
@@ -250,4 +253,25 @@ function startup() {
 
 function update (event) {
   document.getElementById("creator").style.backgroundColor = event.target.value;
+  saveToURL();
+}
+
+/* Récupère toutes les infos nécessaire à la création du t-shirt 
+   et les ajoutent à l'URL.
+  https://developers.google.com/web/updates/2016/01/urlsearchparams */
+function saveToURL () {
+  const params = new URLSearchParams();
+
+  var imgs = document.getElementsByClassName("used");
+  for (img of imgs) {
+    params.set(img.id, img.offsetLeft + " " + img.offsetTop + " " + img.offsetWidth + " " + img.offsetHeight);
+  }
+
+  var div = document.getElementById("creator");
+  if (div.style.backgroundColor != "") {
+    params.set('color', div.style.backgroundColor);
+  }
+
+  params.sort();
+  window.history.replaceState({}, '', `${location.pathname}?${params}`);
 }
