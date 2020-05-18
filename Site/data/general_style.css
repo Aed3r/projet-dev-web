@@ -1,5 +1,5 @@
 body{
-	background-color: #CCFFCC;
+	background-color: #FFFFFF;
 }
 
 /*************************/
@@ -7,7 +7,10 @@ body{
 /*************************/
 header{  
     overflow: hidden; 
-    background-color: #FFC34D;
+    background-color: #BBBBBB; 
+    text-align: center;
+    height: 100px;
+    border-radius: 5px;
 } 
 /*************************/
 /*     Style du logo	 */
@@ -26,17 +29,29 @@ img.logo_img{
 /*     Style du nav      */
 /*************************/
 nav{
-	float : left;
-	width: 90%
-	height: 100%;
+	float: left;
+	width: 89%;
+	height: 98%;
+	margin: 1px;
+	border-radius: 5px;
+	background-color: white;
+}
+nav ul{
+	background-color: yellow;
+	margin : none;
 }
 nav li{
+	background-color: blue;
 	display: inline-block;
 	padding: none;
 	margin : none;
 }
 nav li a{
+	
+	display: inline-block;
 	padding: 0em 1.5em; 
 	text-decoration: none;
 	color: black;
+	font-weight: 600;
+	border: 1px solid;
 }
