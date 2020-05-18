@@ -25,9 +25,13 @@
         <meta charset="UTF-8">
         <title>Créateur intéractif</title>
         <link rel="stylesheet" type="text/css" href="data/creatorStyle.css">
+        <link rel="stylesheet" href="data/general_style.css"> 
+        <link rel="icon" href="data/img/iconne_site.png">
         <script src="data/creatorScript.js" type="text/javascript"></script>
     </head>
     <body>
+    <!-- On include le fichier qui contient le header car il est identique sur toutes les pages -->
+    <?php include 'header.php'?>
     <div id="selector">
     <?php
         if(!isset($_SESSION["pseudo"])) {
@@ -38,7 +42,7 @@
                 $dir = new DirectoryIterator($dirPath);
                 foreach ($dir as $file) {
                     if (!$file->isDot()) {
-                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". basename($file->getPathname()) .">";
+                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". basename($file->getPathname()) ."><br>";
                     }
                 }
             } else {

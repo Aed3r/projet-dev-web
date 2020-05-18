@@ -4,27 +4,13 @@ session_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-    </style>
+	<title>MonTshirt.fr</title>
+	<meta charset="utf-8">
+	<link rel="icon" href="data/img/iconne_site.png">
+    <link rel="stylesheet" href="data/general_style.css"> 
 </head>
 <body>
-	<nav>
-		<a href='index.php'><img src='data/img/iconne_site.png' alt='iconne_site' height='100'></a><br>
-		<?php
-		if(!isset($_SESSION["pseudo"])) {
-		    echo "<h3>Vous n'êtes pas connecté(e)</h3><br>";
-		    echo "<a href='Site/inscription.php'>S'inscrire</a><br>";
-		    echo "<a href='Site/connexion.php'>Se connecter</a>";
-		} else {
-			if($_SESSION["statut"] == 1){
-				echo "<a href='affichage_admin.php'>Affichage boutique (admin)</a><br>";
-				echo "<a href='ajout_boutique.php'>Ajout boutique (admin)</a><br>";
-			}
-			echo "<a href='creator.php'>Creer son t-shit personalisé</a><br>";
-			echo "<a href='boutique_client.php'>boutique</a><br>";
-		    echo "<a href='logout.php'>Se deconnecter</a><br>";
-		}
-		?>
-	</nav>
+	<!-- On include le fichier qui contient le header car il est identique sur toutes les pages -->
+	<?php include 'header.php'?>
 </body>
 </html>
