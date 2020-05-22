@@ -1,28 +1,17 @@
 <?php
+    session_start();
+
+    /*Connexion au sgbd*/
+    include 'bdd/connex.inc.php';
+    $pdo = connex();
+
     function alert($message) {
         echo "<script type='text/javascript'>alert('$message');</script>";
     }
 
-    session_start();
-    $max_size = 50000; /*Taille maximale des photos*/
-    /*$dirPath = "data/users/" . $_SESSION["pseudo"];*/
-    /*Gestion de l'upload de fichier*/
-    /*Version fichiers classique*/
-    /*if(isset($_POST["submit"])) {
-        $file = uniqid($dirPath . "/");
-        if ($_FILES["image"]["size"] > 500000) {
-            alert("Le fichier est trop grand !");
-        } else {
-            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $file)) {
-                alert("Erreur lors de la mise en ligne du fichier : " . $_FILES["image"]["error"]);
-            }
-        }
-        unset($_POST["submit"]);
-    }*/
-    /*Version bdd*/
-    /*Connexion au sgbd*/
-    include 'bdd/connex.inc.php';
-    $pdo = connex();
+    $max_size = 5000000; /*Taille maximale des photos*/
+
+    /*Version bdd*/ 
     if(isset($_POST["submit"])) {
         if(!is_uploaded_file($_FILES["image"]["tmp_name"])){
             alert("Problème lors du transfert de l'image");
@@ -32,10 +21,10 @@
                 alert("Votre fichier est trop volumineux");
             }else{
                 /*Préparation de la requête*/
-                $img_blob = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
+                $img_blob = file_get_contents($_FILES["image"]["tmp_name"]);
                 $req = $pdo->prepare('INSERT INTO images(username, image) VALUES (:pseudo, :image)');
                 $req->bindParam(':pseudo', $_SESSION['pseudo']);
-                $req->bindParam(':image', $img_blob);
+                $req->bindParam(':image', $img_blob, PDO::PARAM_LOB);
                 /*Exécution de la requête*/
                 $req->execute();
             }
@@ -61,23 +50,11 @@
         if(!isset($_SESSION["pseudo"])) {
             header('Location:index.php');
         } else {
-            /*if (is_dir($dirPath)) {
-                # On récupère les images déjà chargé
-                $dir = new DirectoryIterator($dirPath);
-                foreach ($dir as $file) {
-                    if (!$file->isDot()) {
-                        echo "<img src='". $file->getPathname() ."' alt='img' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". basename($file->getPathname()) ."><br>";
-                    }
-                }
-            } else {
-                # L'utilisateur n'a jamais mis en ligne des images
-                mkdir($dirPath);
-            }*/
             /*On recupere les images de l'utilisateur*/
             $req = $pdo->query("SELECT id, image FROM images WHERE username = '". $_SESSION['pseudo'] . "'");
             while($donnee = $req->fetch()){ 
                 /*echo "<img src='genere_image.php?id=".$donnee['id']."' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ."><br>";*/
-                echo "<img src='data:image/png;charset=utf8;base64," . base64_encode($donnee['image']) . "' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ." /><br>";
+                echo "<img src='data:image/jpeg;charset=utf8;base64," . base64_encode($donnee['image']) . "' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ." /><br>";
             }
         }
     ?>
