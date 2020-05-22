@@ -93,6 +93,23 @@ INSERT INTO `utilisateurs` (`pseudo`, `mdp`, `statut`) VALUES
 ('aeder', '7903b02fa1b4bb1d7936adb0ce7e7a58', 0),
 ('test', '098f6bcd4621d373cade4e832627b4f6', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table struucture for table `images_util`
+--
+
+DROP TABLE IF EXISTS `images`;
+CREATE TABLE `images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `image` longblob NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Gestion des images des utilisateurs';
+
+-- --------------------------------------------------------
+
+
 --
 -- Indexes for dumped tables
 --

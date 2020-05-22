@@ -32,13 +32,10 @@
                 alert("Votre fichier est trop volumineux");
             }else{
                 /*Préparation de la requête*/
-                $img_blob = file_get_contents($_FILES["image"]["tmp_name"]);
-                $req = $pdo->prepare('INSERT INTO images_util(pseudo_user, img_name, img_size, img_type, img_blob) VALUES (:pseudo, :name, :size, :type, :blob)');
-                $req->bindParam(':pseudo', $_SESSION["pseudo"]);
-                $req->bindParam(':name', $_FILES["image"]["tmp_name"]);
-                $req->bindParam(':size', $_FILES["image"]["size"]);
-                $req->bindParam(':type', $_FILES["image"]["type"]);
-                $req->bindParam(':blob', addslashes($img_blob)); /*Le blob peut contenir des characteres speciaux*/
+                $img_blob = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
+                $req = $pdo->prepare('INSERT INTO images(username, image) VALUES (:pseudo, :image)');
+                $req->bindParam(':pseudo', $_SESSION['pseudo']);
+                $req->bindParam(':image', $img_blob);
                 /*Exécution de la requête*/
                 $req->execute();
             }
@@ -77,9 +74,10 @@
                 mkdir($dirPath);
             }*/
             /*On recupere les images de l'utilisateur*/
-            $req = $pdo->query("SELECT img_name FROM images_util WHERE pseudo_user = '". $_SESSION['pseudo'] . "'");
-            while($donnee = $req->fetch()){
-                echo "<img src='genere_image.php?name=".$donnee['img_name']."' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['img_name'] ."><br>";
+            $req = $pdo->query("SELECT id, image FROM images WHERE username = '". $_SESSION['pseudo'] . "'");
+            while($donnee = $req->fetch()){ 
+                /*echo "<img src='genere_image.php?id=".$donnee['id']."' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ."><br>";*/
+                echo "<img src='data:image/png;charset=utf8;base64," . base64_encode($donnee['image']) . "' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ." /><br>";
             }
         }
     ?>
