@@ -246,9 +246,11 @@ window.addEventListener("load", startup, false);
 
 function startup() {
   colorWell = document.querySelector("#colorWell");
-  colorWell.value = defaultColor;
-  colorWell.addEventListener("input", update, false);
-  colorWell.select();
+  if (colorWell != null) {
+    colorWell.value = defaultColor;
+    colorWell.addEventListener("input", update, false);
+    colorWell.select();
+  }
 }
 
 function update (event) {
@@ -264,6 +266,7 @@ function saveToURL () {
 
   var imgs = document.getElementsByClassName("used");
   for (img of imgs) {
+    // L'ID de l'image d'origine correspond au nom du fichier source
     params.set(img.id, img.offsetLeft + " " + img.offsetTop + " " + img.offsetWidth + " " + img.offsetHeight);
   }
 
