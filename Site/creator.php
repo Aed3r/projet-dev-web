@@ -64,7 +64,10 @@
             <img src='data/img/plus.svg' alt='Ajouter une image' height='50'>
         </label>
         <input type='submit' value='Upload' name='submit'>
-    </form> <br> <br>
+    </form> 
+    <label for="colorWell">Couleur:</label>
+    <input type="color" value="#ff0000" id="colorWell">
+    <br> <br>
     </div>
     
     <div id="creator" ondrop="drop(event)" ondragover="allowDrop(event)" onmousemove="resize(event)" onmouseleave="resizeStop()" onclick="handleClick(event)">
@@ -77,10 +80,7 @@
     </div>
 
     <br>
-    <label for="colorWell">Couleur:</label>
-    <input type="color" value="#ff0000" id="colorWell">
     <br>
-    <a href='logout.php'>Se déconnecter</a><br>
     <!-- Deconnexion du sgbd -->
     <?php $pdo = NULL ; ?>
     </body>

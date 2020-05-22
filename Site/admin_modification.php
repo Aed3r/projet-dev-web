@@ -5,6 +5,7 @@
     <p>Couleur du produit : <input type="text" name="couleur" /></p>
     <p>Description du produit : <input type="text" name="description" /></p>
     <p>Chemin bers le produit (depuis public-html) : <input type="text" name="lien_image" /></p>
+    <p>Prix du produit : <input type="text" name="prix" /></p>
     <p><input type="submit" value="OK"></p>
 </form>
 
@@ -39,6 +40,13 @@ if (!empty($_POST['lien_image'])) {
     $req4->bindParam(':lien', $_POST['lien_image']);
     $req4->bindParam(':val', $_GET['val']);
     $req4->execute();
+}
+
+if (!empty($_POST['prix'])) {
+    $req5 = $pdo->prepare('UPDATE Produits SET prix= :prix WHERE lien_image = :val');
+    $req5->bindParam(':prix', $_POST['prix']);
+    $req5->bindParam(':val', $_GET['val']);
+    $req5->execute();
 }
 
 echo '<a href="affichage_admin.php"> retour </a>';
