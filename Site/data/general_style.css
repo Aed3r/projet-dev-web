@@ -33,25 +33,24 @@ nav{
 	width: 89%;
 	height: 98%;
 	margin: 1px;
-	border-radius: 5px;
-	background-color: white;
 }
 nav ul{
-	background-color: yellow;
 	margin : none;
 }
 nav li{
-	background-color: blue;
+	background-color: #999999;
 	display: inline-block;
+	width: 49%;
 	padding: none;
 	margin : none;
+	border: 1px solid;
+	border-color: #AAAAAA;
+	border-radius: 10px;
 }
 nav li a{
-	
 	display: inline-block;
-	padding: 0em 1.5em; 
 	text-decoration: none;
 	color: black;
 	font-weight: 600;
-	border: 1px solid;
+	border-radius: 5px;
 }
