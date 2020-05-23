@@ -11,7 +11,7 @@
 
     $max_size = 5000000; /*Taille maximale des photos*/
 
-    /*Version bdd*/ 
+    /* Chargement des images */
     if(isset($_POST["submit"])) {
         if(!is_uploaded_file($_FILES["image"]["tmp_name"])){
             alert("Problème lors du transfert de l'image");
@@ -30,6 +30,8 @@
             }
         }
     }
+
+    $idImages = [];
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +56,8 @@
             $req = $pdo->query("SELECT id, image FROM images WHERE username = '". $_SESSION['pseudo'] . "'");
             while($donnee = $req->fetch()){ 
                 /*echo "<img src='genere_image.php?id=".$donnee['id']."' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ."><br>";*/
-                echo "<img src='data:image/jpeg;charset=utf8;base64," . base64_encode($donnee['image']) . "' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ." /><br>";
+                echo "<img src='data:image/jpeg;charset=utf8;base64," . base64_encode($donnee['image']) . "' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id='". $donnee['id'] ."s' name='". $donnee['id'] ."'/><br>";
+                $idImages[] = $donnee['id'];
             }
         }
     ?>
@@ -66,7 +69,13 @@
         <input type='submit' value='Upload' name='submit'>
     </form> 
     <label for="colorWell">Couleur:</label>
-    <input type="color" value="#ff0000" id="colorWell">
+    <input type="color" value="<?php 
+        if (isset($_GET['c']) && $_GET['c'] !== "" && strlen($_GET['c']) == 7) {
+            echo $_GET['c'];
+        } else {
+            echo '#f5f5f5';
+        }
+    ?>" id="colorWell">
     <br> <br>
     </div>
     
@@ -76,7 +85,29 @@
         <span class="handle" id="topright" onmousedown="resizeStart('topright')" onmouseup="resizeStop()"></span>
         <span class="handle" id="bottomleft" onmousedown="resizeStart('bottomleft')" onmouseup="resizeStop()"></span>
         <span class="handle" id="bottomright" onmousedown="resizeStart('bottomright')" onmouseup="resizeStop()"></span> 
-        <img src='data/img/plus.svg' id="delBtn" alt='Supprimer' class="delBtn">
+        <img src='data/img/plus.svg' id="delBtn" alt='Supprimer' class="delBtn unselectable">
+        <?php 
+            $charID = 'a';
+            foreach ($idImages as $id) {
+                if (isset($_GET[$id]) && is_array($_GET[$id])) {
+                    foreach ($_GET[$id] as $arr) {
+                        if (!is_string($arr)) break 1;
+
+                        /* Coordonnées et dimensions de l'image */
+                        $val = explode(" ", $arr);
+
+                        /* Vérifications */
+                        if (count($val) != 4 ) break 1;
+                        foreach ($val as $tmp) if (!is_int($tmp)) break 1;
+
+                        /* Source de l'image */
+                        $req = $pdo->query("SELECT image FROM images WHERE id = '". $id . "'");
+                        echo "<img id='".$charID."' class='unselectable used' src='data:image/jpeg;charset=utf8;base64,".base64_encode($req->fetch()['image'])."' draggable='true' ondragstart='drag(event)' name='".$id."' style='margin-left:".$val[0]."px; margin-top:".$val[1]."px; width:".$val[2]."px; height:".$val[3]."px;'/>";
+                        $charID++;
+                    }
+                }
+            }
+        ?>
     </div>
 
     <br>

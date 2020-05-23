@@ -240,14 +240,13 @@ function deleteSelected() {
    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color */
 
 var colorWell;
-var defaultColor = "#f5f5f5";
 
 window.addEventListener("load", startup, false);
 
 function startup() {
   colorWell = document.querySelector("#colorWell");
   if (colorWell != null) {
-    colorWell.value = defaultColor;
+    document.getElementById("creator").style.backgroundColor = colorWell.value;
     colorWell.addEventListener("input", update, false);
     colorWell.select();
   }
@@ -266,14 +265,12 @@ function saveToURL () {
 
   var imgs = document.getElementsByClassName("used");
   for (img of imgs) {
-    // L'ID de l'image d'origine correspond au nom du fichier source
-    params.set(img.id, img.offsetLeft + " " + img.offsetTop + " " + img.offsetWidth + " " + img.offsetHeight);
+    // Le champs 'name' de l'image correspond à l'ID de la source 
+    params.append(img.name + '[]', parseInt(img.style.marginLeft) + " " + parseInt(img.style.marginTop) + " " + img.offsetWidth + " " + img.offsetHeight);
   }
 
-  var div = document.getElementById("creator");
-  if (div.style.backgroundColor != "") {
-    params.set('color', div.style.backgroundColor);
-  }
+  colorWell = document.querySelector("#colorWell");
+  params.set('c', colorWell.value);
 
   params.sort();
   window.history.replaceState({}, '', `${location.pathname}?${params}`);
