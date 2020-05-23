@@ -11,7 +11,7 @@
 
     $max_size = 5000000; /*Taille maximale des photos*/
 
-    /* Chargement des images */
+    /*Sauvegarde de l'image sur la bdd sous forme de blob (binaire)*/ 
     if(isset($_POST["submit"])) {
         if(!is_uploaded_file($_FILES["image"]["tmp_name"])){
             alert("Problème lors du transfert de l'image");
