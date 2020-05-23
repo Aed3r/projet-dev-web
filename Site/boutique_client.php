@@ -34,11 +34,11 @@ if(isset($_POST["submit"])) {
 		echo "Désolé mais aucun résultat n'a été trouvé pour la recherche :" . $_POST["recherche"];
 	}else{
 		/*Sinon on affiche le premier produit avant de lancer la boucle (Sinon on loupe le premier produit)*/
-		echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="' . $donnees['lien_image'] . '" width="300" height="250" ></a>'.$donnees['prix'].'€';
+		echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="data:image/jpeg;charset=utf8;base64,' . base64_encode($donnees['image']) . '" width="300" height="250" ></a>'.$donnees['prix'].'€';
 	}
 	while ($donnees = $recup->fetch())
 	{
-	    echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="' . $donnees['lien_image'] . '" width="300" height="250" ></a>'.$donnees['prix'].'€';
+	    echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="data:image/jpeg;charset=utf8;base64,' . base64_encode($donnees['image']) . '" width="300" height="250" ></a>'.$donnees['prix'].'€';
 	}
 	?>
 </body>
