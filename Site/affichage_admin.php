@@ -1,26 +1,43 @@
 <?php
-
+session_start();
+if(!isset($_SESSION["pseudo"])) {
+    header('Location:index.php');
+}
 include 'bdd/connex.inc.php';
 $pdo = connex();
 
 if (isset($_GET['action']) && $_GET['action'] === 'delete') {
-    $sql = $pdo->prepare("DELETE FROM Produits WHERE lien_image = :val ");
+    $pdo->query("DELETE FROM disponibilité WHERE id = ". $_GET['val']);
+    $sql = $pdo->prepare("DELETE FROM Produits WHERE id = :val ");
     $val = $_GET['val'];
     $sql->bindParam(':val', $val);
     $sql->execute();
   }
-
-$recup= $pdo->query('SELECT * FROM Produits');
-while ($donnees = $recup->fetch())
-{
-    echo '<strong>Produit : </strong>'; echo $donnees['type'] .'        ';
-    echo '<strong>Couleur : </strong>'; echo $donnees['couleur'] . '        ';
-    echo '<strong>Description : </strong>'; echo $donnees['description'] . '        ';
-    echo '<strong>prix : </strong>'; echo $donnees['prix'] . '        ';
-    echo '<img src="'.$donnees['lien_image'].'" width="100" height="100" >';
-    echo '<a href="affichage_admin.php?action=delete&val='.$donnees['lien_image'].'"> supprimer </a>';
-    echo '<a href="admin_modification.php?val='.$donnees['lien_image'].'"> modifier </a> <br>';
-}
-
-$pdo = null;
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MonTshirt.fr</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="data/img/iconne_site.png">
+    <link rel="stylesheet" href="data/general_style.css"> 
+</head>
+<body>
+    <?php
+    include 'header.php';
+    $recup= $pdo->query('SELECT * FROM Produits');
+    while ($donnees = $recup->fetch())
+    {
+        echo '<strong>Produit : </strong>'; echo $donnees['type'] .'        ';
+        echo '<strong>Couleur : </strong>'; echo $donnees['couleur'] . '        ';
+        echo '<strong>Description : </strong>'; echo $donnees['description'] . '        ';
+        echo '<strong>prix : </strong>'; echo $donnees['prix'] . '        ';
+        echo '<img src="data:image/jpeg;charset=utf8;base64,'. base64_encode($donnees['image']) .'" width="100" height="100" >';
+        echo '<a href="affichage_admin.php?action=delete&val='.$donnees['id'].'"> supprimer </a>';
+        echo '<a href="admin_modification.php?val='.$donnees['id'].'"> modifier </a> <br>';
+    }
+
+    $pdo = null;
+    ?>
+</body>
+</html>
