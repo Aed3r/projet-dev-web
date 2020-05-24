@@ -14,8 +14,9 @@ var dropOffsetX, dropOffsetY, origin, n = 0;
 
 function drag(ev){
   ev.dataTransfer.setData("text", ev.target.id);
+  origin = ev.target.parentElement.id;
   /* Tenir compte du placement du curseur */
-  if (ev.currentTarget.parentElement.id == "selector") {
+  if (origin == "scrollBox") {
     /* Depuis le sélécteur */
     dropOffsetX = ev.pageX - ev.currentTarget.offsetLeft;
     dropOffsetY = ev.pageY - ev.currentTarget.offsetTop;
@@ -24,18 +25,19 @@ function drag(ev){
     dropOffsetX = ev.pageX - parseInt(ev.currentTarget.style.marginLeft) - ev.currentTarget.parentElement.offsetLeft;
     dropOffsetY = ev.pageY - parseInt(ev.currentTarget.style.marginTop) - ev.currentTarget.parentElement.offsetTop;
   }
-  origin = ev.target.parentElement.id;
-  console.log("test");
 }
 
 function drop(ev){
   ev.preventDefault();
 
+  console.log(event.dataTransfer.files[0]);
+
   var div = document.getElementById("creator");
 
-  if (origin == "selector") {
+  if (origin == "scrollBox") {
     /* On duplique l'image si elle provient du sélecteur */
-    var img = document.getElementById(ev.dataTransfer.getData("text")).cloneNode(false);
+    var id = ev.dataTransfer.getData("text");
+    var img = document.getElementById(id).cloneNode(false);
     img.id = n;
     img.classList.remove("thumbnail");
     img.classList.add("used");

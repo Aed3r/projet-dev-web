@@ -1,6 +1,10 @@
 <?php
     session_start();
 
+    if(!isset($_SESSION["pseudo"])) {
+        header('Location:index.php');
+    }
+
     /*Connexion au sgbd*/
     include 'bdd/connex.inc.php';
     $pdo = connex();
@@ -44,41 +48,52 @@
         <link rel="icon" href="data/img/iconne_site.png">
         <script src="data/creatorScript.js" type="text/javascript"></script>
     </head>
+
     <body>
-    <!-- On include le fichier qui contient le header car il est identique sur toutes les pages -->
+
+    <!-- On inclus le fichier qui contient le header car il est identique sur toutes les pages -->
     <?php include 'header.php'?>
+    
+    <div id="main">
+
+    <!-- Sélection d'images -->
     <div id="selector">
-    <?php
-        if(!isset($_SESSION["pseudo"])) {
-            header('Location:index.php');
-        } else {
-            /*On recupere les images de l'utilisateur*/
+
+        <div id="scrollBox">
+        <?php
+            /* On recupere les images de l'utilisateur */
             $req = $pdo->query("SELECT id, image FROM images WHERE username = '". $_SESSION['pseudo'] . "'");
             while($donnee = $req->fetch()){ 
                 /*echo "<img src='genere_image.php?id=".$donnee['id']."' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ."><br>";*/
                 echo "<img src='data:image/jpeg;charset=utf8;base64," . base64_encode($donnee['image']) . "' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id='". $donnee['id'] ."s' name='". $donnee['id'] ."'/><br>";
                 $idImages[] = $donnee['id'];
             }
-        }
-    ?>
-    <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
-        <label for='image'>
-            <input type='file' name='image' id='image' style='display:none;' accept="image/*"/>
-            <img src='data/img/plus.svg' alt='Ajouter une image' height='50'>
-        </label>
-        <input type='submit' value='Upload' name='submit'>
-    </form> 
-    <label for="colorWell">Couleur:</label>
-    <input type="color" value="<?php 
-        if (isset($_GET['c']) && $_GET['c'] !== "" && strlen($_GET['c']) == 7) {
-            echo $_GET['c'];
-        } else {
-            echo '#f5f5f5';
-        }
-    ?>" id="colorWell">
-    <br> <br>
-    </div>
+        ?>
+        </div>
+        <br>
+
+        <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
+            <label for='image'>
+                <input type='file' name='image' id='image' style='display:none;' accept="image/*"/>
+                <img src='data/img/plus.svg' alt='Ajouter une image' height='50'>
+            </label>
+            <input type='submit' value='Upload' name='submit'>
+        </form> 
+        <br>
+
+        <label for="colorWell">Couleur:</label>
+        <input type="color" value="<?php 
+            if (isset($_GET['c']) && $_GET['c'] !== "" && strlen($_GET['c']) == 7) {
+                echo $_GET['c'];
+            } else {
+                echo '#f5f5f5';
+            }
+        ?>" id="colorWell">
+        <br>
     
+    </div>
+
+    <!-- Créateur -->
     <div id="creator" ondrop="drop(event)" ondragover="allowDrop(event)" onmousemove="resize(event)" onmouseleave="resizeStop()" onclick="handleClick(event)">
         <img src='data/img/tshirt-mask.svg' class="unselectable" id="mask" alt='mask'>
         <span class="handle" id="topleft" onmousedown="resizeStart('topleft')" onmouseup="resizeStop()"></span>
@@ -109,10 +124,11 @@
             }
         ?>
     </div>
+    </div>
 
-    <br>
-    <br>
-    <!-- Deconnexion du sgbd -->
-    <?php $pdo = NULL ; ?>
+    <?php 
+        /* Deconnexion du sgbd */
+        $pdo = NULL ; 
+    ?>
     </body>
 </html>
