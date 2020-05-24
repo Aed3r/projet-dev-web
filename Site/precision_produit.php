@@ -20,7 +20,7 @@ $pdo = connex();
 
 	while ($donnees = $reponse->fetch())
 	{
-	    echo '<img src='.$donnees['lien_image'].' width="300" height="250" /> <br> </a>';
+	    echo '<img src="data:image/jpeg;charset=utf8;base64,' . base64_encode($donnees['image']) . '" width="300" height="250" /> <br>';
 	    echo '<strong>Produit : </strong>'; echo $donnees['type'] . '<br />';
 	    echo '<strong>Couleur : </strong>'; echo $donnees['couleur'] . '<br />';
 	    echo '<strong>Description : </strong>'; echo $donnees['description'] . '<br />';

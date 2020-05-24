@@ -11,7 +11,7 @@ if(isset($_POST["submit"])) {
 <!DOCTYPE html>
 <html>
 <head>
-	<title>MonTshirt.fr/boutique</title>
+	<title>MonTshirt.fr Boutique</title>
 	<meta charset="utf-8">
 	<link rel="icon" href="data/img/iconne_site.png">
     <link rel="stylesheet" href="data/general_style.css"> 

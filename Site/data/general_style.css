@@ -67,3 +67,6 @@ a.t-shirt img{
 	border-color: #000099;
 	border-radius: 5px;
 }
+form.search input{
+	align-self: center;
+}
