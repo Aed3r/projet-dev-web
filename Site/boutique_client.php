@@ -22,25 +22,33 @@ if(isset($_POST["submit"])) {
 	?>
 	<form class='search' action='boutique_client.php' method='post' enctype='multipart/form-data'>
         <label for="recherche">
-        	<input type="text" name="recherche" id="recherche">
+        	<input type="search" name="recherche" id="recherche">
         </label>
         <input type='submit' value='search' name='submit'>
     </form> 
 	<?php
-	/*On fait un premier fetch pour voir si notre requête est vide*/
-	$donnees = $recup->fetch();
-	if(empty($donnees) && isset($_POST["submit"])){
-		/*Si elle l'est on affiche un message d'erreur*/
-		echo "Désolé mais aucun résultat n'a été trouvé pour la recherche :" . $_POST["recherche"];
-	}else{
-		/*Sinon on affiche le premier produit avant de lancer la boucle (Sinon on loupe le premier produit)*/
-		echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="data:image/jpeg;charset=utf8;base64,' . base64_encode($donnees['image']) . '" width="300" height="250" ></a>'.$donnees['prix'].'€';
-	}
 	while ($donnees = $recup->fetch())
 	{
-	    echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="data:image/jpeg;charset=utf8;base64,' . base64_encode($donnees['image']) . '" width="300" height="250" ></a>'.$donnees['prix'].'€';
+		echo '<div class="t-shirt-capsule">';
+	    echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="data:image/jpeg;charset=utf8;base64,' . base64_encode($donnees['image']) . '" width="300" height="250" ></a><br>';
+	    
+	    echo '<label for="'.$donnees['id'].'">taille :</label>';
+		echo '<datalist id="'.$donnees['id'].'">';
+		?>
+			<select name="taille">
+				<option>Veuillez choisir...</option>
+				<?php 
+					$rectaille = $pdo->query('SELECT taille FROM disponibilité WHERE id ='.$donnees['id'].' AND quantité > 0');
+					while($dontaille = $rectaille->fetch()){
+						echo '<option value="'.$dontaille['taille'].'">'.$dontaille['taille'].'</option>';
+					}
+				?>
+			</select>
+		</datalist>
+		<?php echo '<input name="input'.$donnees['id'].'" id="input'.$donnees['id'].'" list="'.$donnees['id'].'"> ';
+		echo $donnees['prix'] . '€';
+		echo '</div>';
 	}
 	?>
 </body>
 </html>
-

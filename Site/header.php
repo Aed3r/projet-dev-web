@@ -5,9 +5,10 @@
 	    </div>
 	    <nav>
 	        <ul>
+				<li><a href='boutique_client.php'>Boutique</a></li>
 	        <?php
 	        if(!isset($_SESSION["pseudo"])) {
-	            echo "Vous n'êtes pas connecté(e)<br>";
+	            echo "<br>Vous n'êtes pas connecté(e)<br>";
 	            echo "<li><a href='inscription.php'>S'inscrire</a></li>";
 	            echo "<li><a href='connexion.php'>Se connecter</a></li>";
 	        } else {
@@ -16,7 +17,6 @@
 	                echo "<li><a href='ajout_boutique.php'>Ajout boutique (admin)</a></li>";
 	            }
 	            echo "<li><a href='creator.php'>Créer son T-shirt personnalisé</a></li>";
-	            echo "<li><a href='boutique_client.php'>Boutique</a></li>";
 	            echo "<li><a href='logout.php'>Se deconnecter</a></li>";
 	        }
 	        ?>

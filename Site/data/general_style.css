@@ -70,3 +70,6 @@ a.t-shirt img{
 form.search input{
 	align-self: center;
 }
+.t-shirt-capsule{
+	float: left;
+}
