@@ -15,23 +15,28 @@ form.inline {
     max-width: 150px;
 }
 
-form.inline input  {
-    padding: 8px 15px;
-    background-color: green;
+#main input {
+    background-color: lightgoldenrodyellow;
     border: 1px solid #ddd;
-    color: white;
+    color: #000099;
+	font-weight: 600;
+	border-radius: 5px;
+}
+
+#main input:hover  {
+    background-color: goldenrod;
+}
+
+#submitBTN {
+    padding: 8px 15px;
     margin: 0px 10px;
 }
-
-form.inline input:hover  {
-    background-color: darkgreen;
-}
-
 
 div#scrollBox {
     float: right;
     height: 80%;
     overflow-y: auto;
+    margin-right: 5px;
 }
 
 div#creator {
@@ -44,6 +49,7 @@ div#creator {
     border: 1px solid black;
     border-radius: 25px;
     background-image: url("img/tshirt.svg");
+    background-size: contain;
     background-color: whitesmoke;
 }
 
@@ -53,14 +59,22 @@ div#creator {
     flex-wrap: nowrap;
 }
 
+#generateBTN {
+    height: 30px;
+    margin-left: 20px;
+    margin-top: auto;
+}
+
 #creator > img {
     position: absolute;
 }
 
 #mask {
     /* Même tailles que #creator */
-    object-fit: fill;
+    object-fit: contain;
     border-radius: inherit;
+    max-width: 100%;
+    max-height: 100%;
     /* Le masque reste toujours au dessus des images */
     z-index: 1;
     /* On clique au travers le masque */

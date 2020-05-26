@@ -246,12 +246,16 @@ var colorWell;
 window.addEventListener("load", startup, false);
 
 function startup() {
+  /* Couleur */
   colorWell = document.querySelector("#colorWell");
   if (colorWell != null) {
     document.getElementById("creator").style.backgroundColor = colorWell.value;
     colorWell.addEventListener("input", update, false);
     colorWell.select();
   }
+  
+  /* Images */
+  adjustURLImages();
 }
 
 function update (event) {
@@ -266,9 +270,10 @@ function saveToURL () {
   const params = new URLSearchParams();
 
   var imgs = document.getElementsByClassName("used");
+  var divD = document.getElementById("creator").offsetWidth;
   for (img of imgs) {
     // Le champs 'name' de l'image correspond à l'ID de la source 
-    params.append(img.name + '[]', parseInt(img.style.marginLeft) + " " + parseInt(img.style.marginTop) + " " + img.offsetWidth + " " + img.offsetHeight);
+    params.append(img.name + '[]', roundToThree(parseInt(img.style.marginLeft) * 100 / divD) + " " + roundToThree(parseInt(img.style.marginTop) * 100 / divD) + " " + roundToThree(img.offsetWidth * 100 / divD) + " " + roundToThree(img.offsetHeight * 100 / divD));
   }
 
   colorWell = document.querySelector("#colorWell");
@@ -276,4 +281,27 @@ function saveToURL () {
 
   params.sort();
   window.history.replaceState({}, '', `${location.pathname}?${params}`);
+}
+
+/* Ajuste les images par rapport à la taille du div */
+function adjustURLImages () {
+  var divW = document.getElementById("creator").offsetWidth;
+  var divH = document.getElementById("creator").offsetWidth;
+
+  var imgs = document.getElementsByClassName("used");
+  for (img of imgs) {
+    img.style.marginLeft = parseInt(img.style.marginLeft) * divW / 100 + "px";
+    img.style.marginTop = parseInt(img.style.marginTop) * divH / 100 + "px";
+    img.style.width = parseInt(img.style.width) * divW / 100 + "px";
+    img.style.height = parseInt(img.style.height) * divH / 100 + "px";
+  }
+}
+
+function genTshirt () {
+  location.pathname = "Site/genererTshirt.php";
+}
+
+/* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round */
+function roundToThree(num) {    
+  return +(Math.round(num + "e+3")  + "e-3");
 }

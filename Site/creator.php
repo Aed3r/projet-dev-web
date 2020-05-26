@@ -13,7 +13,7 @@
         echo "<script type='text/javascript'>alert('$message');</script>";
     }
 
-    $max_size = 5000000; /*Taille maximale des photos*/
+    $max_size = 5000000; /* Taille maximale des photos: 5 MB */
 
     /*Sauvegarde de l'image sur la bdd sous forme de blob (binaire)*/ 
     if(isset($_POST["submit"])) {
@@ -64,7 +64,6 @@
             /* On recupere les images de l'utilisateur */
             $req = $pdo->query("SELECT id, image FROM images WHERE username = '". $_SESSION['pseudo'] . "'");
             while($donnee = $req->fetch()){ 
-                /*echo "<img src='genere_image.php?id=".$donnee['id']."' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id =". $donnee['id'] ."><br>";*/
                 echo "<img src='data:image/jpeg;charset=utf8;base64," . base64_encode($donnee['image']) . "' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id='". $donnee['id'] ."s' name='". $donnee['id'] ."'/><br>";
                 $idImages[] = $donnee['id'];
             }
@@ -77,7 +76,7 @@
                 <input type='file' name='image' id='image' style='display:none;' accept="image/*"/>
                 <img src='data/img/plus.svg' alt='Ajouter une image' height='50'>
             </label>
-            <input type='submit' value='Upload' name='submit'>
+            <input type='submit' value='Upload' name='submit' id='submitBTN'>
         </form> 
         <br>
 
@@ -102,6 +101,7 @@
         <span class="handle" id="bottomright" onmousedown="resizeStart('bottomright')" onmouseup="resizeStop()"></span> 
         <img src='data/img/plus.svg' id="delBtn" alt='Supprimer' class="delBtn unselectable">
         <?php 
+            /* Recréation du T-Shirt à partir de l'URL */
             $charID = 'a';
             foreach ($idImages as $id) {
                 if (isset($_GET[$id]) && is_array($_GET[$id])) {
@@ -124,6 +124,7 @@
             }
         ?>
     </div>
+    <input type='button' value='Générer >' id='generateBTN' onclick='genTshirt()'>
     </div>
 
     <?php 
