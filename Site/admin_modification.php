@@ -5,7 +5,7 @@ if(!isset($_SESSION["pseudo"])) {
 }
 ?>
 
-<!Doctype html>
+<!DOCTYPE html>
 <html>
 <form action="" method="post" enctype='multipart/form-data'>
     <p>Type du produit : <input type="text" name="type" /></p>

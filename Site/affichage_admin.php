@@ -33,8 +33,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
         echo '<strong>Description : </strong>'; echo $donnees['description'] . '        ';
         echo '<strong>prix : </strong>'; echo $donnees['prix'] . '        ';
         echo '<img src="data:image/jpeg;charset=utf8;base64,'. base64_encode($donnees['image']) .'" width="100" height="100" >';
-        echo '<a href="affichage_admin.php?action=delete&val='.$donnees['id'].'"> supprimer </a>';
-        echo '<a href="admin_modification.php?val='.$donnees['id'].'"> modifier </a> <br>';
+        echo '<a href="affichage_admin.php?action=delete&val='.$donnees['id'].'" class="input_admin"> <input type="button" value="supprimer"> </a>';
+        echo '<a href="admin_modification.php?val='.$donnees['id'].'"class="input_admin"> <input type="button" value="modifier"> </a> ';
+        echo '<a href="admin_stock.php?val='.$donnees['id'].'"class="input_admin"> <input type="button" value="voir le stock"> </a> <br>';
     }
 
     $pdo = null;
