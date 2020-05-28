@@ -28,6 +28,15 @@ $pdo = connex();
 	}
 
 	$reponse->closeCursor();
+	echo '<strong>Tailles disponibles :</strong><br>';
+	/*Recuperation et affichage des tailles disponibles*/
+	echo '<ul>';
+		$tailles = $pdo->query('SELECT taille FROM disponibilité WHERE id ='.$_GET['var'].' AND quantité > 0');
+		while($donneetailles = $tailles->fetch()){
+			echo '<li>'.$donneetailles['taille'].'</li>';
+		}
+	echo '</ul>';
+	
 	echo '<a href="boutique_client.php"> retour </a>';
 	$pdo = null;
 	?>
