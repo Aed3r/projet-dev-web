@@ -34,6 +34,7 @@
         } else {
             echo "<script>alert('Erreur lors de l'ajout d'un T-Shirt dans la boutique!');</script>";
         }
+        $req->closeCursor();
     }
 ?>
 
@@ -58,6 +59,7 @@
     while($donnee = $req->fetch()){ 
         echo "<img src='data:image/jpeg;charset=utf8;base64," . base64_encode($donnee['image']) . "' class='hidden' id='". $donnee['id'] ."'/> ";
     }
+    $req->closeCursor();
     ?>
 
     <div id="main">
@@ -76,7 +78,7 @@
                         <input type='button' value='Ajouter à la boutique' onclick='toStore()'>
                     </form> <br>";
             } else {
-                echo "<input type='button' value='Acheter >' id='buyBTN'>";
+                echo "<input type='button' value='Acheter >' id='buyBTN' onclick='buy()'>";
             }
         ?>
         </div>

@@ -103,8 +103,11 @@ function countChar(e) {
     document.getElementById('countLbl').innerHTML = e.value.length + "/60";
 };
 
-function back() {
-    location.pathname = "Site/creator.php";
+function back () {
+    /* On garde les paramètres de l'URL */
+    var url = window.location.href;
+    url = url.replace("genererTshirt", "creator");
+    location.assign(url);
 }
 
 function toStore () {
@@ -121,4 +124,8 @@ function toStore () {
         document.getElementById("tmpData").value = c.toDataURL();
         document.getElementById("adminForm").submit();
     }
+}
+
+function buy () {
+    location.href = "acheter.php";
 }
