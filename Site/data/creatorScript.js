@@ -298,7 +298,10 @@ function adjustURLImages () {
 }
 
 function genTshirt () {
-  location.pathname = "Site/genererTshirt.php";
+  /* On garde les paramètres de l'URL */
+  var url = window.location.href;
+  url = url.replace("creator", "genererTshirt");
+  location.assign(url);
 }
 
 /* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round */
