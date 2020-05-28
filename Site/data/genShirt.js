@@ -122,3 +122,7 @@ function toStore () {
         document.getElementById("adminForm").submit();
     }
 }
+
+function buy () {
+    window.location.href = "acheter.php";
+}

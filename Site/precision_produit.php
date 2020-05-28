@@ -28,8 +28,11 @@ $pdo = connex();
 	}
 
 	$reponse->closeCursor();
-	echo '<a href="boutique_client.php"> retour </a>';
 	$pdo = null;
 	?>
+	<form action="acheter.php">
+		<input type="submit" value="Acheter" />
+	</form>
+	<a href="boutique_client.php"> retour </a>
 </body>
 </html>

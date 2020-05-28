@@ -67,6 +67,7 @@
                 echo "<img src='data:image/jpeg;charset=utf8;base64," . base64_encode($donnee['image']) . "' height='50' draggable='true' class='unselectable thumbnail' ondragstart='drag(event)' id='". $donnee['id'] ."s' name='". $donnee['id'] ."'/><br>";
                 $idImages[] = $donnee['id'];
             }
+            $req->closeCursor();
         ?>
         </div>
         <br>
@@ -119,6 +120,7 @@
                         $req = $pdo->query("SELECT image FROM images WHERE id = '". $id . "'");
                         echo "<img id='".$charID."' class='unselectable used' src='data:image/jpeg;charset=utf8;base64,".base64_encode($req->fetch()['image'])."' draggable='true' ondragstart='drag(event)' name='".$id."' style='margin-left:".$val[0]."px; margin-top:".$val[1]."px; width:".$val[2]."px; height:".$val[3]."px;'/>";
                         $charID++;
+                        $req->closeCursor();
                     }
                 }
             }
