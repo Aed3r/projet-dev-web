@@ -280,7 +280,9 @@ function saveToURL () {
   params.set('c', colorWell.value);
 
   params.sort();
+  /* Ajout dans l'URL */
   window.history.replaceState({}, '', `${location.pathname}?${params}`);
+  document.getElementById("submitForm").action = 'creator.php?' + params;
 }
 
 /* Ajuste les images par rapport à la taille du div */
