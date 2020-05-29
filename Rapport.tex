@@ -1,0 +1,152 @@
+\documentclass[french]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{wrapfig,lipsum}
+
+\usepackage[sfdefault,light]{FiraSans}
+%%\usepackage[sfdefault]{FiraSans} %% Version normale, si les caracteres sont trop fin
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+
+\title{
+  \textbf{Rapport du projet de D\'{e}veloppement Web:} \\
+  \large\itshape Site de vente de T-Shirt avec créateur de motifs personnalisés}
+\author{BERNARD Paul-Antoine, AIT ADDI Marwan, HUBERT Gustav }
+\date{Avril 2020}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\setlength{\parskip}{1em}
+
+\section{Pr\'{e}sentation du site}
+
+\subsection{Acheter des t-shirt \`{a} motifs pr\'{e}cr\'{e}es}
+La première partie de notre site consiste en une boutique classique de vente de t-shirt, on peut parcourir le catalogue librement ou bien effectuer une recherche spécifique. Tout le catalogue est accessible, que l'on soit un utilisateur connecté ou non.
+
+\subsection{Cr\'{e}er ses propres motifs}
+Les utilisateurs ayants choisis de s'inscrire sur le site ont accès a un créateur interactif de t-shirt. Ils peuvent changer les couleurs du T-Shirt et importer leurs propres images (nous n'en fournissons pas/ pas de recherche google directement sur le site pour respecter les droits d'auteurs) pour les placer sur le t-shirt.
+
+\subsection{Fonctions administratives}
+Les administrateurs on accès a des outils de gestions tels que la suppression ou l'ajout de nouveaux t-shirt dans la boutique ainsi que la gestion des stocks de t-shirt. \`{A} l'aide du cr\'{e}ateur, ils peuvent \'{e}galement ajouter leurs propre motifs personnalis\'{e} directement dans la boutique.
+
+\subsection{Acc\`{e}s et utilisation}
+
+\noindent Le site se trouve \`{a} l'adresse
+\begin{verbatim}
+    https://mira2.univ-st-etienne.fr/~hg08566t/Site/index.php
+\end{verbatim}
+Le compte \verb|admin| a pour mot de passe \verb|passe|.
+
+\section{Boutique}
+
+\subsection{Creation de la Base de Données (Paul-Antoine)}
+Pour stocker tous les produits ainsi que leurs informations nous avons du passer par une base de données. La première étape a été de créer celle-ci par le biais de Phpmyadmin. Au départ il n'y avait que deux tables : Produits qui contient les champs type, description, etc et Quantité qui contient elle les champs taille, nombre restant. Puis a été rajoutée une table pour stocker les images réalisées dans le créateur interactif. La deuxième grosse modification concerne elle la manière de stocker les images dans la base de données. En effet nous avions commencé par créer un attribut ''chemin'' qui indiquait où aller chercher les images. Au final nous avons trouvé que stocker directement les images dans la base de données (au moyen d'un champ BLOB) était plus simple.
+
+\subsection{Pages PHP (Paul-Antoine)}
+Maintenant que nous avions notre base de données il fallait créer les pages php qui nous permettraient d'effectuer des requêtes. Nous avons donc notamment utilisé PDO pour cela. Il y a deux parties importantes à mettre en place pour gérer une boutique en ligne : l'accès au site par les clients et l'accès au site par les administateurs.
+
+\subsubsection{Accès Client (Paul-Antoine/Marwan)}
+Nous avons écrit deux pages Php pour réaliser cette partie. Il faut tout d'abord afficher la boutique. En effet lorsque l'on arrive sur un site de vente, on voit l'ensemble des produits avec quelques informations. Dans notre cas, nous avons décidé d'afficher l'image d'un produit avec le nom et le prix de celui-ci. Le principe étant de réaliser une requête de type \verb|SELECT *| puis avec un fetch de récupérer chaque tuple de la table dans une boucle et enfin d'afficher les attributs qui nous intéressent. Il nous restait ensuite à créer une page php qui afficherait des détails suplémentaires lorsque l'on clique sur une image. Pour cela, lors de l'affichage d'une image on crée aussi un lien vers une autre page php qui affichera plus d'informations. On passe par un \verb|$_GET| pour transmetre l'identifiant du produit dans l'url et pour savoir pour quel produit de la base de données on doit apporter des précisions. 
+Nous avons également ajouté une liste déroulante permettant de selectionner l'une des tailles disponibles pour ce t-shirt, ces tailles sont stockées dans la table \verb|Disponibilité|
+
+\subsubsection{Accès Admin (Paul-Antoine)}
+Comme pour l'accès client on aura un affichage de la boutique mais cette fois-ci tous les champs seront affichés. Une autre différence est que l'on a deux liens qui permettent pour chaque produit affiché de le supprimer ou de le modifier. On passe aussi par un \verb|$_GET| pour récuper l'identifiant du produit lors de l'activation du lien. Pour la supression on crée une action delete qui sera une simple requête de supression de tous les champs. Pour la modification en revanche on est redirigé vers une nouvelle page. Celle-ci est constituée d'un formulaire, on récupère les valeurs qui doivent être modifiées via un \verb|$_POST|. Puis on effectue ensuite les requêtes de modifications seulement pour les champs que l'administrateur aura renseigné. Enfin il y'a une dernière possibilité qui est d'ajouter un produit dans la base de données. Pour cela on utilise un formulaire et au moyen d'un \verb|$_POST| on récupère les nouvelles valeurs à insérer dans la base de données.
+
+\subsection{Recherche par mot-clef (Marwan)}
+Afin de permettre aux utilisateur de trouver plus facilement un t-shirt qui leut correspond nous avons ajouté une fonction de recherche dans la boutique, le principe de fonctionnement est simple, on recupère les mots-clefs de la recherche avec une methode post puis on fait une requete a notre base de donnée en utilisant \textit{WHERE description LIKE "\%mots-clefs\%"} ce qui correspond a renvoyer tout les produits contenant les mots-clefs quelque pars dans la description.
+
+\subsection{Gestion des stocks de la boutique (Marwan/Gustav)}
+Les stocks de la boutique sont représentés par la table \verb|Disponibilité|. On y associe un id de T-Shirt, une taille et une quantité de produits disponible. La page de gestion des stocks, accessible aux administrateurs seulement, permet de visualiser ces donn\'{e}es sous forme de tableau. L'acc\`{e}s se fait depuis la page de gestion des produits. A l'aide de cet outil, les administrateurs peuvent ais\'{e}ment supprimer ou ajouter des tailles et du stock de produits. Les valeurs sont additionnées lors d'un ajout de stock sur une taille existante.
+
+\section{Cr\'{e}ateur int\'{e}ractif}
+
+\subsection{Sauvergarde et affichage des images utilisateur dans la base de donnée (Marwan)}
+
+Les images que l'utilisateur a souhaité upload pour creer ses propres t-shirts sont stockées directement dans la table image sous forme de BLOB qui est un type de données qui stocke des binary files, afin de recuperer ce genre de données on utilise la fonction php \verb|file_get_content()| qui renvoie une chaine représentant l'image.
+On effectue ensuite un INSERT sur la table image avec le pseudo de l'utilisateur a qui correspond l'image et le blob de l'image préparé au préalable. \par
+Ensuite afin d'afficher l'image on effectue une boule sur les résultats d'une requête qui recupère toutes les image de l'utilisateur, a l'interieur de cette boucle on souhaite afficher l'image dans une balise \verb|<img>| mais comment faire sans chemin vers l'image ? \\
+Afin d'afficher l'image a partir du blob on ecris ceci dans le src : \\ \verb|"data:image/jpeg;charset=utf8;base64," . base64_encode($donnee['image'])|\\
+Expliquons chaque partie de cette chaine de charactere :
+\begin{itemize}
+    \item \verb|"data:image/jpeg"| : Ceci explicite simplement sous quelle format afficher l'image.
+    \item \verb|"charset=utf8"| : On spécifie ici l'encodage de la chaine blob.
+    \item \verb|"base64," . base64_encode($donnee['image'])"| : On specifie que la chaine est encodée en MIME base64 puis on utilise la commande \verb|base64_encode()| pour encoder correctement les donnees de l'image. Je vous renvoie vers la page du manuel pour plus d'infomation sur la commande \verb|base64_encode()| (https://www.php.net/manual/fr/function.base64-encode.php).
+\end{itemize}
+Ainsi notre image s'affiche comme d'habitude avec une balise img.
+
+\subsection{Drag \& Drop (Marwan/Gustav)}
+
+Afin de pourvoir glisser et déposer nos images on va leur donner quelques attributs spéciaux et utiliser des fonction javascript dont voici l'explication. \\
+Premierement on va attribuer a nos image un attribut \verb|ondragstart="drag(event)"| quand on va commencer a drag notre image on appelle la fonction javascript drag qui recupere l'evenement et prépare un transfert de donnée avec \verb|ev.dataTransfer.setData| de type \verb|"text"| et on utilise l'id de l'evenement pour savoir quelles données recuperer \verb|ev.target.id|, ensuite on calcule les coordonées de notre image par rapport a la page selon que l'on est dans le sélecteur d'images ou le créateur. 
+\newpage
+Ensuite nous ajoutons l'attribut \verb|ondragover="allowDrop(event)"| pour lancer une fonction qui permet de donner le droit de drop une image a chaque fois que l'on drag une image avec \verb|ev.preventDefault()| selon certaines conditions (nottament qu'il y a assez de place pour poser l'image. Enfin on fini par l'attribut \verb|ondrop="drop(event)"| qui permet d'appeler la fonction \verb|drop(event)| qui va ajouter l'image dans  dans le créateur avec un \verb|div.appendChild(img)| qui ajoute un nouveau "fils" donc du contenu de type image dans le créateur.
+
+Lors du placement d'une image, au lieu de d\'{e}placer l'image existante, on utilise un clone de celle-ci. De cette fa\c{c}on on peux r\'{e}utiliser la m\^{e}me image plusieurs fois. Il faut \'{e}videmment ajuster le syst\`{e}me d'\textit{id} pour \'{e}viter les confusions.
+
+\subsection{Mask (Gustav)}
+
+\begin{wrapfigure}{r}{5.5cm}
+\includegraphics[scale=0.3]{modele-t-shirt.png}
+\end{wrapfigure} 
+
+Pour donner une meilleure id\'{e}e du produit fini, on ajoute au div créateur un mod\`{e}le simplifi\'{e} de t-shirt. Cela permet le visionnage de l'emplacement des images par rapport au t-shirt. Il est important que l'image SVG remplit entièrement le div, reste toujours en fond et ne peux pas être sélectionnée par l'utilisateur. En utilisant une image au format SVG (et donc non rast\'{e}ris\'{e}), ce mod\`{e}le ne perd pas en qualit\'{e} lorsque la taille de la fen\^{e}tre augmente. De plus, \'{e}tant transparente, on peux simnplement changer la couleur du div pour changer la couleur du t-shirt.
+
+\begin{wrapfigure}{l}{5.5cm}
+\includegraphics[scale=0.3]{mask.png}
+\end{wrapfigure} 
+
+Pour améliorer l'expérience on ajoute une deuxième image faisant office de masque pour cacher les bouts d'images dépassant du t-shirt. Il s'agit de l'inverse de la première image placé au même endroit et ayant les mêmes propriétés grâce au mot-clés $inherit$. Similairement, il faut toujours que cette image soit au dessus des autres. On s'en assure grâce à l'indice de profondeur $z-index$. Finalement on utilise $user-select: none$ pour éviter que l'utilisateur puisse accidentellement sélectionner le masque.
+
+\clearpage
+\newpage
+
+\subsection{Redimensionnement et délétion (Gustav)}
+
+\begin{wrapfigure}{r}{5.5cm}
+\includegraphics[scale=0.3]{handles.png}
+\end{wrapfigure} 
+
+Si l'utilisateurs peux changer l'emplacement des images qu'il utilise, il faut également lui permettre de les redimensionner. Ainsi, un clic sur une image fait apparaitre des poignées aux coins permettant de l'étirer aux dimensions voulu. Les proportions originales sont respectées en utilisant la touche shift. Les poignées correspondent à quatre éléments $span$ créés avec lors du chargement de la page. Au besoin on affiche ces quatres élément puis on les déplace.
+
+Les poignées étant affichées on passe au redimensionnement. Dès que l'utilisateur appuie sur un des coins, et jusqu'à ce qu'il relache, on utilise la position du curseur pour calculer la taille de l'image sélectionnée. Pour trois des poignées il faut également déplacer l'image. Finalement on vérifie que le curseur ne dépasse pas les limites du créateur ou de l'image elle même.
+
+\`{A} l'aide du même système on peux également faire apparaître un bouton permettant de supprimer l'image sélectionnée. 
+
+\subsection{Couleurs (Gustav)}
+
+\begin{wrapfigure}{l}{5.5cm}
+\includegraphics[scale=0.2]{images/couleur.png}
+\end{wrapfigure} 
+
+Pour changer la couleur du t-shirt on utilise une entrée de type $color$. Initialement la couleur du t-shirt ne changait que lorsqu'on valide une couleur. Pour directement visualiser la nouvelle couleur sur le t-shirt on utilise un $eventListener$. Celui-ci permet d'appeler une fonction lorsqu'un élément, dans notre cas une entrée, change.
+
+\clearpage
+\newpage
+
+\subsection{Sauvegarde (Gustav)}
+
+Lors de l'importation d'images il est nécessaire de recharger la page pour ensuite utiliser PHP. Cela marche bien mais a pour effet de supprimer toutes les images déjà placée sur le t-shirt. Pour remédier à cela il faut donc enregistrer tout changements. Malheureusement, accéder à la base de données à l'aide de JavaScript pure n'est pas possible. Reste alors l'utilisation de l'URL. En utilisant les cha\^{i}nes de requ\^{e}tes de l'URL on peux sauvegarder toutes les informations n\'{e}cessaire pour recr\'{e}er le T-Shirt. Il est important d'utiliser des pourcentages pour repr\'{e}senter les tailles et dimensions des images. Si la fen\^{e}tre change de taille on peux garder le m\^{e}me T-Shirt. Lors du chargement de la page il suffit alors de vérifier si les ID images et la couleur se trouvent dans l'URL (\`{a} l'aide de PHP) et ainsi recréer l'image.
+
+\begin{center}
+    \includegraphics[scale=0.6]{URL.png}
+\end{center}
+
+\subsection{G\'{e}n\'{e}ration (Gustav)}
+
+Le T-Shirt créé à l'aide du créateur ne peux pas être utilisée tel quel. Lorsqu'il a finit, l'utilisateur avance donc à la page \textit{genererTshirt.php}. Celle-ci r\'{e}cup\`{e}re alors les informations n\'{e}cessaires pour recr\'{e}er l'image sur un \textit{canvas} (de fac\c{c}on similaire \`{a} l'\'{e}diteur avec l'URL). A cette \'{e}tape on utilise une vraie image de T-Shirt dont on modifie la couleur. Apr\`{e}s avoir plac\'{e} les images au bon endroit on peux g\'{e}n\'{e}rer une image de T-Shirt pr\`{e}s \`{a} l'achat. S'il le souhaite, l'utilisateur peux revenir en arri\`{e}re et modifier son T-Shirt. Au lieu d'acheter le T-Shirt cr\'{e}\'{e}, un administrateur \`{a} l'option de placer sa cr\'{e}ation dans la boutique.
+
+\section{Schéma de la Base de Donnée}
+
+\begin{center}
+    \includegraphics[scale=0.5]{shema.png}
+\end{center}
+
+\end{document}
