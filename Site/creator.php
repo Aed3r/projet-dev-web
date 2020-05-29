@@ -72,7 +72,8 @@
         </div>
         <br>
 
-        <form class='inline' action='creator.php' method='post' enctype='multipart/form-data'>
+        <form class='inline' id='submitForm' action='creator.php' method='post' enctype='multipart/form-data'>
+            <input type='text' id='dataField' name='data' class='hidden'/>
             <label for='image'>
                 <input type='file' name='image' id='image' style='display:none;' accept="image/*"/>
                 <img src='data/img/plus.svg' alt='Ajouter une image' height='50'>

@@ -116,3 +116,8 @@ div#creator {
      /* Créé à l'aide de https://codepen.io/sosuke/pen/Pjoqqp */
      filter: invert(26%) sepia(88%) saturate(7392%) hue-rotate(5deg) brightness(97%) contrast(129%);
  }
+
+ .hidden {
+    display: none;
+    position: absolute;
+  }
