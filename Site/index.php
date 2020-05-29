@@ -19,7 +19,7 @@ session_start();
 			<img src="data/img/boutique.png">
 			<div>
 				<article>
-				Ce site internet vous premetra de choisir parmis une grande variété de t-shirts répondant à tous vos désirs.<br>
+				Ce site internet vous permettras de choisir parmi une grande variété de t-shirts répondant à tous vos désirs.<br>
 				</article>
 				<br>
 				<a href="boutique_client.php"> <input type="button" value="Vers la boutique"> </a>
