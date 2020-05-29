@@ -27,8 +27,10 @@ if(isset($_POST["submit"])) {
         <input type='submit' value='search' name='submit'>
     </form> 
 	<?php
-	while ($donnees = $recup->fetch())
+	$len = $recup->rowCount();
+	for ($i = 1; $i <= $len; $i++)
 	{
+		$donnees = $recup->fetch();
 		echo '<div class="t-shirt-capsule">';
 	    echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="data:image/jpeg;charset=utf8;base64,' . base64_encode($donnees['image']) . '" width="300" height="250" ></a><br>';
 	    
@@ -38,7 +40,7 @@ if(isset($_POST["submit"])) {
 			<select name="taille">
 				<option>Veuillez choisir...</option>
 				<?php 
-					$rectaille = $pdo->query('SELECT taille FROM disponibilité WHERE id ='.$donnees['id'].' AND quantité > 0');
+					$rectaille = $pdo->query('SELECT taille FROM disponibilite WHERE id ='.$donnees['id'].' AND quantite > 0');
 					while($dontaille = $rectaille->fetch()){
 						echo '<option value="'.$dontaille['taille'].'">'.$dontaille['taille'].'</option>';
 					}
