@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 29, 2020 at 11:00 AM
+-- Generation Time: May 29, 2020 at 11:17 AM
 -- Server version: 10.4.12-MariaDB
 -- PHP Version: 7.4.5
 
@@ -27,11 +27,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `disponibilite`
 --
 
-DROP TABLE IF EXISTS `disponibilite`;
 CREATE TABLE `disponibilite` (
   `id` int(11) NOT NULL,
   `quantite` int(11) NOT NULL,
-  `taille` varchar(6) NOT NULL
+  `taille` varchar(6) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -40,7 +39,6 @@ CREATE TABLE `disponibilite` (
 -- Table structure for table `images`
 --
 
-DROP TABLE IF EXISTS `images`;
 CREATE TABLE `images` (
   `id` int(11) NOT NULL,
   `username` varchar(20) CHARACTER SET utf8 NOT NULL,
@@ -53,12 +51,11 @@ CREATE TABLE `images` (
 -- Table structure for table `Produits`
 --
 
-DROP TABLE IF EXISTS `Produits`;
 CREATE TABLE `Produits` (
   `id` int(11) NOT NULL,
-  `type` varchar(25) NOT NULL,
-  `couleur` varchar(15) NOT NULL,
-  `description` varchar(60) NOT NULL,
+  `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `couleur` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `image` longblob NOT NULL,
   `prix` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -70,8 +67,8 @@ CREATE TABLE `Produits` (
 --
 
 CREATE TABLE `utilisateurs` (
-  `pseudo` varchar(20) NOT NULL,
-  `mdp` varchar(32) NOT NULL,
+  `pseudo` varchar(20) CHARACTER SET utf8 NOT NULL,
+  `mdp` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `statut` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Gestion des utilisateurs';
 
@@ -80,9 +77,7 @@ CREATE TABLE `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`pseudo`, `mdp`, `statut`) VALUES
-('admin', 'b89f7a5ff3e3a225d572dac38b2a67f7', 1),
-('marwan74', '6b719ae7f40c7570594c8c1912e7c6ae', 0),
-('test', '098f6bcd4621d373cade4e832627b4f6', 0);
+('admin', 'b89f7a5ff3e3a225d572dac38b2a67f7', 1);
 
 --
 -- Indexes for dumped tables
@@ -143,7 +138,7 @@ ALTER TABLE `disponibilite`
 -- Constraints for table `images`
 --
 ALTER TABLE `images`
-  ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`username`) REFERENCES `utilisateurs` (`pseudo`);
+  ADD CONSTRAINT `utiliCheck` FOREIGN KEY (`username`) REFERENCES `utilisateurs` (`pseudo`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
