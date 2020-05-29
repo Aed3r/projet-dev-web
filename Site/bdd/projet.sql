@@ -87,7 +87,7 @@ INSERT INTO `utilisateurs` (`pseudo`, `mdp`, `statut`) VALUES
 -- Indexes for table `disponibilite`
 --
 ALTER TABLE `disponibilite`
-  ADD PRIMARY KEY (`id`,`quantite`,`taille`) USING BTREE;
+  ADD PRIMARY KEY (`id`,`taille`) USING BTREE;
 
 --
 -- Indexes for table `images`
