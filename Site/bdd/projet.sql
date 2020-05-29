@@ -27,11 +27,12 @@ SET time_zone = "+00:00";
 -- Table structure for table `disponibilite`
 --
 
+DROP TABLE IF EXISTS `disponibilite`;
 CREATE TABLE `disponibilite` (
   `id` int(11) NOT NULL,
   `quantite` int(11) NOT NULL,
   `taille` varchar(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -39,6 +40,7 @@ CREATE TABLE `disponibilite` (
 -- Table structure for table `images`
 --
 
+DROP TABLE IF EXISTS `images`;
 CREATE TABLE `images` (
   `id` int(11) NOT NULL,
   `username` varchar(20) CHARACTER SET utf8 NOT NULL,
@@ -51,6 +53,7 @@ CREATE TABLE `images` (
 -- Table structure for table `Produits`
 --
 
+DROP TABLE IF EXISTS `Produits`;
 CREATE TABLE `Produits` (
   `id` int(11) NOT NULL,
   `type` varchar(25) NOT NULL,
@@ -58,7 +61,7 @@ CREATE TABLE `Produits` (
   `description` varchar(60) NOT NULL,
   `image` longblob NOT NULL,
   `prix` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -70,7 +73,16 @@ CREATE TABLE `utilisateurs` (
   `pseudo` varchar(20) NOT NULL,
   `mdp` varchar(32) NOT NULL,
   `statut` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Gestion des utilisateurs';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Gestion des utilisateurs';
+
+--
+-- Dumping data for table `utilisateurs`
+--
+
+INSERT INTO `utilisateurs` (`pseudo`, `mdp`, `statut`) VALUES
+('admin', 'b89f7a5ff3e3a225d572dac38b2a67f7', 1),
+('marwan74', '6b719ae7f40c7570594c8c1912e7c6ae', 0),
+('test', '098f6bcd4621d373cade4e832627b4f6', 0);
 
 --
 -- Indexes for dumped tables

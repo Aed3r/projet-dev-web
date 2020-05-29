@@ -25,7 +25,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
 </head>
 <body>
     <?php
-
     include 'header.php';
 
     echo "<table>
