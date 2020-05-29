@@ -19,9 +19,23 @@
 	}
 
 	if (isset($_POST["taille"]) && $_POST["taille"] != null && $_POST["taille"] != "" && $_POST["quantite"] != null && $_POST["quantite"] != "") {
-		$req = $pdo->prepare('INSERT INTO disponibilite(id, quantite, taille) VALUES (:id, :q, :t)');
+		/*On regarde si on a pas déja des pieces dans cette taille la*/
+		$test = $pdo->prepare('SELECT * FROM disponibilite WHERE taille LIKE :t AND id = :id');
+		$test->bindParam(':id', $_GET["val"]);
+		$test->bindParam(':t', $_POST["taille"]);
+		$test->execute();
+		if($test->rowCount() > 0){
+			/*Si c'est le cas on fait un UPDATE et pas un INSERT*/
+			$row = $test->fetch();
+			$req = $pdo->prepare('UPDATE disponibilite SET quantite = :q WHERE id = :id AND taille LIKE :t');
+			/*ON ajoute la nouvelle quantité a l'ancienne avant de changer la valeur de celle ci*/
+			$newquantite = $_POST["quantite"] + $row['quantite'];
+			$req->bindParam(':q', $newquantite); 
+		}else{
+			$req = $pdo->prepare('INSERT INTO disponibilite(id, quantite, taille) VALUES (:id, :q, :t)');
+			$req->bindParam(':q', $_POST["quantite"]);
+		}
 		$req->bindParam(':id', $_GET["val"]);
-		$req->bindParam(':q', $_POST["quantite"]);
 		$req->bindParam(':t', $_POST["taille"]);
 		if ($req->execute() != TRUE) {
 			echo "Erreur lors de l'ajout de stock!";
