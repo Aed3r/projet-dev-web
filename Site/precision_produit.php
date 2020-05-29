@@ -28,7 +28,7 @@ $pdo = connex();
 	    echo '<strong>Tailles disponibles :</strong><br>';
 		/*Recuperation et affichage des tailles disponibles*/
 		echo '<ul>';
-			$tailles = $pdo->query('SELECT taille FROM disponibilité WHERE id ='.$_GET['var'].' AND quantité > 0');
+			$tailles = $pdo->query('SELECT taille FROM disponibilite WHERE id ='.$_GET['var'].' AND quantite > 0');
 			while($donneetailles = $tailles->fetch()){
 				echo '<li>'.$donneetailles['taille'].'</li>';
 			}

@@ -23,7 +23,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
     <link rel="stylesheet" href="data/general_style.css"> 
 </head>
 <body>
-    <?php/bin/gcc
+    <?php
     include 'header.php';
     $recup= $pdo->query('SELECT * FROM Produits');
     while ($donnees = $recup->fetch())

@@ -20,12 +20,12 @@ if(!isset($_SESSION["pseudo"])) {
 	<?php
 		include 'bdd/connex.inc.php';
 		$pdo = connex();
-		$reponse= $pdo->query('SELECT * FROM disponibilité WHERE id = '. $_GET['val']);
+		$reponse= $pdo->query('SELECT * FROM disponibilite WHERE id = '. $_GET['val']);
 		echo '<h1> Stock disponible pour ce t-shirt </h1>';
 		while($donnee = $reponse->fetch()){
 			echo '<tr>';
 			echo '<td>'.$donnee['taille'].'</td>';
-			echo '<td>'.$donnee['quantité'].'</td>';
+			echo '<td>'.$donnee['quantite'].'</td>';
 			echo '</tr>';
 		}
 		$pdo = null;
