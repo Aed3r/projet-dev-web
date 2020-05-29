@@ -1,13 +1,13 @@
 <?php
 session_start();
-if(!isset($_SESSION["pseudo"])) {
+if(!isset($_SESSION["pseudo"]) || $_SESSION["statut"] != 1) {
     header('Location:index.php');
 }
 include 'bdd/connex.inc.php';
 $pdo = connex();
 
 if (isset($_GET['action']) && $_GET['action'] === 'delete') {
-    $pdo->query("DELETE FROM disponibilité WHERE id = ". $_GET['val']);
+    $pdo->query("DELETE FROM disponibilite WHERE id = ". $_GET['val']);
     $sql = $pdo->prepare("DELETE FROM Produits WHERE id = :val ");
     $val = $_GET['val'];
     $sql->bindParam(':val', $val);
@@ -43,6 +43,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
         echo '<td> <a href="admin_stock.php?val='.$donnees['id'].'"class="input_admin"> <input type="button" value="voir le stock"> </a></td> </tr>';
     }
     echo '</table>';
+    $recup->closeCursor();
     $pdo = null;
     ?>
 </body>

@@ -18,6 +18,7 @@
     $pdo = connex();
 
     if (isset($_POST["img"])) {
+        /* Ajout du produit dans la bdd */
         $imgb64 = $_POST['img'];
         $imgb64 = str_replace('data:image/png;base64,', '', $imgb64);
         $imgb64 = str_replace(' ', '+', $imgb64);
@@ -30,7 +31,19 @@
         $req->bindParam(':prix', $_POST['price']);
 
         if ($req->execute() == TRUE) {
-            header("Location:boutique_client.php");
+            /* Ajout de la disponibilité. On récupère l'ID du t-shirt ajouté */
+            $recup = $pdo->query('SELECT * FROM Produits ORDER BY id DESC LIMIT 1');
+            $donnees = $recup->fetch();
+            $idTshirt = $donnees['id'];
+            $recup->closeCursor();
+
+            $req = $pdo->prepare('INSERT INTO disponibilite(id, quantite, taille) VALUES (:id, 50, "XL"), (:id, 50, "L"), (:id, 50, "M"), (:id, 50, "S")');
+            $req->bindParam(':id', $idTshirt);
+            if ($req->execute() == TRUE) {
+                header("Location:boutique_client.php");
+            } else {
+                echo "<script>alert('Erreur lors de l'ajout d'un T-Shirt dans la boutique!');</script>";
+            }
         } else {
             echo "<script>alert('Erreur lors de l'ajout d'un T-Shirt dans la boutique!');</script>";
         }
