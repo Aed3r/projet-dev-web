@@ -25,6 +25,14 @@ $pdo = connex();
 	    echo '<strong>Couleur : </strong>'; echo $donnees['couleur'] . '<br />';
 	    echo '<strong>Description : </strong>'; echo $donnees['description'] . '<br />';
 	    echo '<strong>Prix : </strong>'; echo $donnees['prix'] . '€<br />';
+	    echo '<strong>Tailles disponibles :</strong><br>';
+		/*Recuperation et affichage des tailles disponibles*/
+		echo '<ul>';
+			$tailles = $pdo->query('SELECT taille FROM disponibilité WHERE id ='.$_GET['var'].' AND quantité > 0');
+			while($donneetailles = $tailles->fetch()){
+				echo '<li>'.$donneetailles['taille'].'</li>';
+			}
+		echo '</ul>';
 	}
 
 	$reponse->closeCursor();
