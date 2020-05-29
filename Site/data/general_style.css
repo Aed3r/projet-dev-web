@@ -72,6 +72,8 @@ form.search input{
 }
 .t-shirt-capsule{
 	float: left;
+	display: flex;
+	align-items: center;
 }
 /******************************/
 /* Style de la boutique admin */
