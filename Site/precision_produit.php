@@ -1,7 +1,24 @@
 <?php
 session_start();
+
 include 'bdd/connex.inc.php';
 $pdo = connex();
+
+if (!isset($_GET['var']) || strlen($_GET['var']) > 4 || $_GET['var'] == null || $_GET['var'] == "") {
+	header("Location:boutique_client.php");
+}
+
+/* Reduction du stock lors d'un achat */
+if(isset($_GET['buy']) && isset($_POST['taille']) && $_POST['taille'] != null && $_POST['taille'] != "") {
+	$req = $pdo->prepare('UPDATE disponibilite SET quantite = quantite - 1 WHERE id = :id AND taille = :t');
+	$req->bindParam(':id', $_GET['var']);
+	$req->bindParam(':t', $_POST['taille']);
+	if ($req->execute() == TRUE) {
+		header("Location:acheter.php");
+	} else {
+		echo "Cette taille n'existe pas!";
+	}
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,7 +31,6 @@ $pdo = connex();
 <body>
 	<?php
 	include 'header.php';
-	//echo $_GET['var'];
 
 	$reponse= $pdo->query('SELECT * FROM Produits WHERE id = '.$_GET['var'].'');
 
@@ -36,11 +52,27 @@ $pdo = connex();
 	}
 
 	$reponse->closeCursor();
-	$pdo = null;
-	?>
-	<form action="acheter.php">
-		<input type="submit" value="Acheter" />
+
+	echo '<form action="precision_produit.php?var='.$_GET["var"].'&buy=1" method="post">';
+		echo '<label for="list">Taille :</label>';
+		echo '<datalist id="list">';
+		?>
+			<select>
+				<option>Veuillez choisir...</option>
+				<?php 
+					$rectaille = $pdo->query('SELECT taille FROM disponibilite WHERE id ='.$_GET["var"].' AND quantite > 0');
+					while($dontaille = $rectaille->fetch()){
+						echo '<option value="'.$dontaille['taille'].'">'.$dontaille['taille'].'</option>';
+					}
+				?>
+			</select>
+		</datalist>
+		<?php echo '<input name="taille" id="inputTaille" list="list"> '; ?>
+		<input type="submit" value="Acheter">
 	</form>
-	<a href="boutique_client.php"> retour </a>
+	
+	<br><br>
+	<a href="boutique_client.php"> <input type="button" value="< Retour"> </a>
+	<?php $pdo = null ?>
 </body>
 </html>

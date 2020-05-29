@@ -33,21 +33,6 @@ if(isset($_POST["submit"])) {
 		$donnees = $recup->fetch();
 		echo '<div class="t-shirt-capsule">';
 	    echo '<a href="precision_produit.php?var= '.$donnees['id'].'" class="t-shirt"><img src="data:image/jpeg;charset=utf8;base64,' . base64_encode($donnees['image']) . '" width="300" height="250" ></a><br>';
-	    
-	    echo '<label for="'.$donnees['id'].'">taille :</label>';
-		echo '<datalist id="'.$donnees['id'].'">';
-		?>
-			<select name="taille">
-				<option>Veuillez choisir...</option>
-				<?php 
-					$rectaille = $pdo->query('SELECT taille FROM disponibilite WHERE id ='.$donnees['id'].' AND quantite > 0');
-					while($dontaille = $rectaille->fetch()){
-						echo '<option value="'.$dontaille['taille'].'">'.$dontaille['taille'].'</option>';
-					}
-				?>
-			</select>
-		</datalist>
-		<?php echo '<input name="input'.$donnees['id'].'" id="input'.$donnees['id'].'" list="'.$donnees['id'].'"> ';
 		echo $donnees['prix'] . '€';
 		echo '</div>';
 	}

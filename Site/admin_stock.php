@@ -10,10 +10,11 @@
 	$pdo = connex();
 
 	if (isset($_GET["delete"])) {
-		$req = $pdo->prepare('DELETE FROM disponibilite WHERE taille = :t');
+		$req = $pdo->prepare('DELETE FROM disponibilite WHERE id = :id AND taille = :t');
+		$req->bindParam(':id', $_GET["val"]);
 		$req->bindParam(':t', $_GET["delete"]);
 		if ($req->execute() != TRUE) {
-			echo "<script>alert('Erreur lors de la suppression de stock!');</script>";
+			echo "Erreur lors de la suppression de stock!";
 		}
 	}
 
@@ -23,7 +24,7 @@
 		$req->bindParam(':q', $_POST["quantite"]);
 		$req->bindParam(':t', $_POST["taille"]);
 		if ($req->execute() != TRUE) {
-			echo "<script>alert('Erreur lors de l'ajout de stock!');</script>";
+			echo "Erreur lors de l'ajout de stock!";
 		}
 	}
 ?>
@@ -61,6 +62,8 @@
 		<input type="text" id="quantIn" name="quantite">
 		<input type="submit" value="Ajouter le stock">
 	</form>
+	<br>
+	<a href="affichage_admin.php"> <input type="button" value="< Retour"> </a>
 	</table>
 </body>
 </html>
