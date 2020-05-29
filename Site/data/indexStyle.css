@@ -1,0 +1,46 @@
+#main {
+    margin: 0 200px;
+}
+
+#boutique {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+}
+
+#boutique img {
+    height: 300px;
+    float: left;
+}
+
+
+#createur {
+    display: inline-flex;
+    align-items: center;
+    clear: both;
+}
+
+#createur img {
+    height: 300px;
+    float: right;
+}
+
+#createur article {
+    float: left;
+    text-align: right;
+}
+
+#createur div input {
+    float: right;
+}
+
+#main input {
+    border: 10px solid transparent;
+    border-radius: 20%;
+    background-color: slategray;
+    color: seashell;
+}
+
+#main input:hover {
+    background-color: darkslategray;
+}

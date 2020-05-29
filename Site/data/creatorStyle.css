@@ -7,7 +7,7 @@ form.inline {
 }
 
 .thumbnail {
-    border-bottom: 5px solid navy;
+    border-bottom: 5px solid #000099;
     border-radius: 15px;
     float: right;
     margin-bottom: 5px;
@@ -121,3 +121,7 @@ div#creator {
     display: none;
     position: absolute;
   }
+
+body {
+    background: radial-gradient(circle, rgba(202, 255, 208, 1) 0%, rgba(215, 255, 241, 1) 100%);
+}
