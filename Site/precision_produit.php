@@ -41,19 +41,13 @@ if(isset($_GET['buy']) && isset($_POST['taille']) && $_POST['taille'] != null &&
 	    echo '<strong>Couleur : </strong>'; echo $donnees['couleur'] . '<br />';
 	    echo '<strong>Description : </strong>'; echo $donnees['description'] . '<br />';
 	    echo '<strong>Prix : </strong>'; echo $donnees['prix'] . '€<br />';
-	    echo '<strong>Tailles disponibles :</strong><br>';
-		/*Recuperation et affichage des tailles disponibles*/
-		echo '<ul>';
-			$tailles = $pdo->query('SELECT taille FROM disponibilite WHERE id ='.$_GET['var'].' AND quantite > 0');
-			while($donneetailles = $tailles->fetch()){
-				echo '<li>'.$donneetailles['taille'].'</li>';
-			}
-		echo '</ul>';
 	}
 
 	$reponse->closeCursor();
 
+
 	echo '<form action="precision_produit.php?var='.$_GET["var"].'&buy=1" method="post">';
+		/*Menu déroulant pour choisir la taille*/
 		echo '<label for="list">Taille :</label>';
 		echo '<datalist id="list">';
 		?>
