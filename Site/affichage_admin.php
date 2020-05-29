@@ -21,23 +21,29 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
     <meta charset="utf-8">
     <link rel="icon" href="data/img/iconne_site.png">
     <link rel="stylesheet" href="data/general_style.css"> 
+    <link rel="stylesheet" type="text/css" href="data/pagesAdmin.css">
 </head>
 <body>
-    <?php/bin/gcc
+    <?php
+
     include 'header.php';
+
+    echo "<table>
+        <tr> <th>Produit</th> <th>Couleur</th> <th>Description</th> <th>Prix</th> <th>Image</th> <th>Supprimer</th> <th>Modifier</th> <th>Stock</th> </tr>";
+
     $recup= $pdo->query('SELECT * FROM Produits');
     while ($donnees = $recup->fetch())
     {
-        echo '<strong>Produit : </strong>'; echo $donnees['type'] .'        ';
-        echo '<strong>Couleur : </strong>'; echo $donnees['couleur'] . '        ';
-        echo '<strong>Description : </strong>'; echo $donnees['description'] . '        ';
-        echo '<strong>prix : </strong>'; echo $donnees['prix'] . '        ';
-        echo '<img src="data:image/jpeg;charset=utf8;base64,'. base64_encode($donnees['image']) .'" width="100" height="100" >';
-        echo '<a href="affichage_admin.php?action=delete&val='.$donnees['id'].'" class="input_admin"> <input type="button" value="supprimer"> </a>';
-        echo '<a href="admin_modification.php?val='.$donnees['id'].'"class="input_admin"> <input type="button" value="modifier"> </a> ';
-        echo '<a href="admin_stock.php?val='.$donnees['id'].'"class="input_admin"> <input type="button" value="voir le stock"> </a> <br>';
+        echo '<tr> <td>'; echo $donnees['type'] .'</td> ';
+        echo '<td>'; echo $donnees['couleur'] . '</td> ';
+        echo '<td>'; echo $donnees['description'] . '</td> ';
+        echo '<td>'; echo $donnees['prix'] . '</td> ';
+        echo '<td> <img src="data:image/jpeg;charset=utf8;base64,'. base64_encode($donnees['image']) .'" alt="" width="100" height="100"></img></td> ';
+        echo '<td> <a href="affichage_admin.php?action=delete&val='.$donnees['id'].'" class="input_admin"> <input type="button" value="supprimer"> </a></td> ';
+        echo '<td> <a href="admin_modification.php?val='.$donnees['id'].'"class="input_admin"> <input type="button" value="modifier"> </a></td> ';
+        echo '<td> <a href="admin_stock.php?val='.$donnees['id'].'"class="input_admin"> <input type="button" value="voir le stock"> </a></td> </tr>';
     }
-
+    echo '</table>';
     $pdo = null;
     ?>
 </body>
